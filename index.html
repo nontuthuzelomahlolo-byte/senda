@@ -6,23 +6,57 @@
 
   <style>
     body {
-      font-family: Arial;
-      background: #F4F8FF;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
+
+      /* 🌤️ Soft gradient background */
+      background: linear-gradient(
+        180deg,
+        #dbeafe 0%,
+        #f0f9ff 50%,
+        #ffffff 100%
+      );
     }
 
+    /* 🌈 Floating shapes */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    .shape1 {
+      width: 200px;
+      height: 200px;
+      background: #3B82F6;
+      top: -50px;
+      left: -50px;
+    }
+
+    .shape2 {
+      width: 250px;
+      height: 250px;
+      background: #22C55E;
+      bottom: -80px;
+      right: -80px;
+    }
+
+    /* 🟦 Header */
     .header {
       background: #3B82F6;
       color: white;
       padding: 20px;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: bold;
     }
 
@@ -31,13 +65,19 @@
       opacity: 0.9;
     }
 
+    /* 📦 Main card */
     .card {
-      background: white;
+      background: rgba(255,255,255,0.95);
       margin: 20px auto;
       padding: 20px;
       border-radius: 16px;
       max-width: 400px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+
+      /* 💎 Glass effect */
+      backdrop-filter: blur(10px);
     }
 
     input, select {
@@ -49,6 +89,7 @@
       font-size: 14px;
     }
 
+    /* 🟢 Button */
     button {
       background: #22C55E;
       color: white;
@@ -59,18 +100,22 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     button:hover {
       background: #16a34a;
+      transform: scale(1.02);
     }
 
+    /* 🎟️ Voucher output */
     .voucher {
       background: #E0F2FE;
       margin-top: 20px;
       padding: 20px;
       border-radius: 12px;
       border: 2px dashed #3B82F6;
+      animation: fadeIn 0.5s ease;
     }
 
     .voucher h3 {
@@ -78,20 +123,33 @@
     }
 
     .code {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
       color: #EF4444;
+      letter-spacing: 2px;
     }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
   </style>
 </head>
 
 <body>
 
+  <!-- 🌈 Background shapes -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
+
+  <!-- 🟦 Header -->
   <div class="header">
     <div class="logo">💸 SENDA</div>
     <div class="tagline">Send help instantly</div>
   </div>
 
+  <!-- 📦 Card -->
   <div class="card">
     <h3>Create Voucher</h3>
 
@@ -123,7 +181,7 @@
       let pin = document.getElementById("pin").value;
 
       if (!name || !phone || !shop || !pin) {
-        alert("Fill all fields");
+        alert("Please fill all fields");
         return;
       }
 
