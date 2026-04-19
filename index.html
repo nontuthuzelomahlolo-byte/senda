@@ -7,63 +7,96 @@
   <style>
     body {
       font-family: Arial;
-      background: #f4f4f4;
-      padding: 20px;
+      background: #F4F8FF;
+      margin: 0;
+      padding: 0;
       text-align: center;
     }
 
-    h1 {
-      color: #1e3a8a;
+    .header {
+      background: #3B82F6;
+      color: white;
+      padding: 20px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .tagline {
+      font-size: 14px;
+      opacity: 0.9;
     }
 
     .card {
       background: white;
+      margin: 20px auto;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 16px;
       max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     }
 
     input, select {
       width: 90%;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
     }
 
     button {
-      background: #22c55e;
+      background: #22C55E;
       color: white;
       border: none;
-      padding: 12px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 14px;
+      border-radius: 10px;
       width: 95%;
       font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
     }
 
     .voucher {
-      background: #e0f2fe;
+      background: #E0F2FE;
       margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px dashed #3B82F6;
+    }
+
+    .voucher h3 {
+      margin-top: 0;
+    }
+
+    .code {
+      font-size: 20px;
+      font-weight: bold;
+      color: #EF4444;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>💸 SENDA VOUCHER</h1>
+  <div class="header">
+    <div class="logo">💸 SENDA</div>
+    <div class="tagline">Send help instantly</div>
+  </div>
 
   <div class="card">
-
-    <h3>Send Help Instantly</h3>
+    <h3>Create Voucher</h3>
 
     <input id="name" placeholder="Your Name">
     <input id="phone" placeholder="Phone Number">
-
     <input id="shop" placeholder="Enter Shop Code">
 
     <select id="amount">
@@ -75,10 +108,9 @@
 
     <input id="pin" placeholder="Create 4-digit PIN">
 
-    <button onclick="createVoucher()">Create Voucher</button>
+    <button onclick="createVoucher()">Send Voucher</button>
 
     <div id="output"></div>
-
   </div>
 
   <script>
@@ -99,10 +131,10 @@
 
       let voucherHTML = `
         <div class="voucher">
-          <h3>Voucher Created ✅</h3>
+          <h3>Voucher Ready ✅</h3>
           <p><b>Shop:</b> ${shop}</p>
           <p><b>Amount:</b> R${amount}</p>
-          <p><b>Code:</b> ${code}</p>
+          <p class="code">${code}</p>
           <p><b>PIN:</b> ${pin}</p>
         </div>
       `;
