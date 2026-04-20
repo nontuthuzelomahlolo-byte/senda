@@ -8,102 +8,101 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      text-align: center;
-
-      background: linear-gradient(
-        180deg,
-        #dbeafe 0%,
-        #f0f9ff 50%,
-        #ffffff 100%
-      );
+      background: #f4f6f9;
     }
 
-    .bg-shape {
-      position: fixed;
-      border-radius: 50%;
-      opacity: 0.2;
-      z-index: 0;
-    }
-
-    .shape1 {
-      width: 200px;
-      height: 200px;
-      background: #3B82F6;
-      top: -50px;
-      left: -50px;
-    }
-
-    .shape2 {
-      width: 250px;
-      height: 250px;
-      background: #22C55E;
-      bottom: -80px;
-      right: -80px;
-    }
-
+    /* HEADER */
     .header {
       background: #3B82F6;
       color: white;
-      padding: 20px;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      position: relative;
-      z-index: 1;
+      text-align: center;
+      padding: 18px;
+      border-radius: 0 0 20px 20px;
     }
 
-    .logo {
-      font-size: 26px;
-      font-weight: bold;
+    .header h2 {
+      margin: 0;
     }
 
-    .tagline {
-      font-size: 14px;
+    .header p {
+      margin: 4px 0 0;
+      font-size: 13px;
       opacity: 0.9;
     }
 
-    .card {
-      background: rgba(255,255,255,0.95);
-      margin: 20px auto;
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 420px;
+      margin: auto;
       padding: 20px;
-      border-radius: 16px;
-      max-width: 400px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      position: relative;
-      z-index: 1;
-      backdrop-filter: blur(10px);
-      text-align: left;
     }
 
+    /* CARDS */
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 20px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+    h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    /* INPUTS */
     input, select {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
+      margin-top: 10px;
       border-radius: 8px;
       border: 1px solid #ddd;
       font-size: 14px;
     }
 
+    /* BUTTON */
     button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
       background: #22C55E;
       color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 10px;
-      width: 100%;
       font-weight: bold;
-      font-size: 16px;
       cursor: pointer;
+      font-size: 15px;
     }
 
     button:hover {
       background: #16a34a;
     }
 
+    /* TERMS */
+    .terms {
+      font-size: 12px;
+      margin-top: 12px;
+      color: #444;
+    }
+
+    .terms ul {
+      padding-left: 18px;
+      margin: 8px 0;
+    }
+
+    .terms label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    /* VOUCHER DISPLAY */
     .voucher {
       background: #E0F2FE;
       margin-top: 20px;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
       border: 2px dashed #3B82F6;
       text-align: center;
@@ -116,73 +115,70 @@
       letter-spacing: 2px;
     }
 
-    ul {
-      padding-left: 18px;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- Background -->
-  <div class="bg-shape shape1"></div>
-  <div class="bg-shape shape2"></div>
-
-  <!-- Header -->
+  <!-- HEADER -->
   <div class="header">
-    <div class="logo">💸 SENDA</div>
-    <div class="tagline">Send help instantly</div>
+    <h2>💸 SENDA</h2>
+    <p>Send help instantly</p>
   </div>
 
-  <!-- CREATE VOUCHER -->
-  <div class="card">
-    <h3>Create Voucher</h3>
+  <div class="container">
 
-    <input id="name" placeholder="Your Name">
-    <input id="phone" placeholder="Phone Number">
-    <input id="shop" placeholder="Enter Shop Code">
+    <!-- CREATE VOUCHER -->
+    <div class="card">
+      <h3>Create Voucher</h3>
 
-    <select id="amount">
-      <option value="50">R50</option>
-      <option value="100">R100</option>
-      <option value="150">R150</option>
-      <option value="200">R200</option>
-    </select>
+      <input id="name" placeholder="Your Name">
+      <input id="phone" placeholder="Phone Number">
+      <input id="shop" placeholder="Enter Shop Code">
 
-    <input id="pin" placeholder="Create 4-digit PIN">
+      <select id="amount">
+        <option value="50">R50</option>
+        <option value="100">R100</option>
+        <option value="150">R150</option>
+        <option value="200">R200</option>
+      </select>
 
-    <!-- TERMS -->
-    <div style="font-size:12px; margin-top:10px;">
-      <p><b>📜 Terms & Conditions</b></p>
-      <ul>
-        <li>Minimum 80% of voucher must be spent in-store</li>
-        <li>Remaining balance can be given as change</li>
-        <li>Voucher valid only at selected shop</li>
-        <li>Voucher can only be used once</li>
-      </ul>
+      <input id="pin" placeholder="Create 4-digit PIN">
 
-      <label>
-        <input type="checkbox" id="agreeTerms">
-        I agree to the Terms & Conditions
-      </label>
+      <!-- TERMS -->
+      <div class="terms">
+        <b>📜 Terms & Conditions</b>
+        <ul>
+          <li>Minimum 80% must be spent in-store</li>
+          <li>Remaining balance can be given as change</li>
+          <li>Valid only at selected shop</li>
+          <li>Voucher can only be used once</li>
+        </ul>
+
+        <label>
+          <input type="checkbox" id="agreeTerms">
+          I agree to Terms & Conditions
+        </label>
+      </div>
+
+      <button onclick="createVoucher()">Send Voucher</button>
+
+      <div id="output"></div>
     </div>
 
-    <button onclick="createVoucher()">Send Voucher</button>
+    <!-- SHOP VERIFICATION -->
+    <div class="card">
+      <h3>Shop Verification</h3>
 
-    <div id="output"></div>
-  </div>
+      <input id="verifyShop" placeholder="Shop Code">
+      <input id="verifyCode" placeholder="Voucher Code">
+      <input id="verifyPin" placeholder="PIN">
 
-  <!-- SHOP VERIFICATION -->
-  <div class="card">
-    <h3>Shop Verification</h3>
+      <button onclick="verifyVoucher()">Verify Voucher</button>
 
-    <input id="verifyShop" placeholder="Shop Code">
-    <input id="verifyCode" placeholder="Voucher Code">
-    <input id="verifyPin" placeholder="PIN">
+      <div id="verifyOutput"></div>
+    </div>
 
-    <button onclick="verifyVoucher()">Verify Voucher</button>
-
-    <div id="verifyOutput"></div>
   </div>
 
   <script>
@@ -231,7 +227,7 @@ PIN: ${pin}
 
       let whatsappLink = "https://wa.me/?text=" + encodeURIComponent(message);
 
-      let voucherHTML = `
+      document.getElementById("output").innerHTML = `
         <div class="voucher">
           <h3>Voucher Ready ✅</h3>
           <p><b>Shop:</b> ${shop}</p>
@@ -240,14 +236,12 @@ PIN: ${pin}
           <p><b>PIN:</b> ${pin}</p>
 
           <a href="${whatsappLink}" target="_blank">
-            <button style="margin-top:15px;background:#25D366;">
+            <button style="margin-top:10px;background:#25D366;">
               📲 Send via WhatsApp
             </button>
           </a>
         </div>
       `;
-
-      document.getElementById("output").innerHTML = voucherHTML;
     }
 
     function verifyVoucher() {
@@ -295,11 +289,12 @@ PIN: ${pin}
           border-radius:10px;
           margin-top:10px;
           border:2px solid #22c55e;
+          text-align:center;
         ">
           <h3 style="color:#16a34a;">✅ APPROVED</h3>
           <p><b>Shop:</b> ${voucher.shop}</p>
           <p><b>Amount:</b> R${voucher.amount}</p>
-          <p style="color:#555;">Voucher marked as USED</p>
+          <p>Voucher marked as USED</p>
         </div>
       `;
     }
