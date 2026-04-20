@@ -72,10 +72,11 @@
       position: relative;
       z-index: 1;
       backdrop-filter: blur(10px);
+      text-align: left;
     }
 
     input, select {
-      width: 90%;
+      width: 100%;
       padding: 12px;
       margin: 10px 0;
       border-radius: 8px;
@@ -89,7 +90,7 @@
       border: none;
       padding: 14px;
       border-radius: 10px;
-      width: 95%;
+      width: 100%;
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
@@ -105,6 +106,7 @@
       padding: 20px;
       border-radius: 12px;
       border: 2px dashed #3B82F6;
+      text-align: center;
     }
 
     .code {
@@ -113,12 +115,16 @@
       color: #EF4444;
       letter-spacing: 2px;
     }
+
+    ul {
+      padding-left: 18px;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Background shapes -->
+  <!-- Background -->
   <div class="bg-shape shape1"></div>
   <div class="bg-shape shape2"></div>
 
@@ -145,6 +151,22 @@
 
     <input id="pin" placeholder="Create 4-digit PIN">
 
+    <!-- TERMS -->
+    <div style="font-size:12px; margin-top:10px;">
+      <p><b>📜 Terms & Conditions</b></p>
+      <ul>
+        <li>Minimum 80% of voucher must be spent in-store</li>
+        <li>Remaining balance can be given as change</li>
+        <li>Voucher valid only at selected shop</li>
+        <li>Voucher can only be used once</li>
+      </ul>
+
+      <label>
+        <input type="checkbox" id="agreeTerms">
+        I agree to the Terms & Conditions
+      </label>
+    </div>
+
     <button onclick="createVoucher()">Send Voucher</button>
 
     <div id="output"></div>
@@ -154,9 +176,9 @@
   <div class="card">
     <h3>Shop Verification</h3>
 
-    <input id="verifyShop" placeholder="Enter Shop Code">
-    <input id="verifyCode" placeholder="Enter Voucher Code">
-    <input id="verifyPin" placeholder="Enter PIN">
+    <input id="verifyShop" placeholder="Shop Code">
+    <input id="verifyCode" placeholder="Voucher Code">
+    <input id="verifyPin" placeholder="PIN">
 
     <button onclick="verifyVoucher()">Verify Voucher</button>
 
@@ -171,9 +193,15 @@
       let shop = document.getElementById("shop").value;
       let amount = document.getElementById("amount").value;
       let pin = document.getElementById("pin").value;
+      let agreed = document.getElementById("agreeTerms").checked;
 
       if (!name || !phone || !shop || !pin) {
         alert("Please fill all fields");
+        return;
+      }
+
+      if (!agreed) {
+        alert("You must agree to Terms & Conditions");
         return;
       }
 
@@ -224,35 +252,38 @@ PIN: ${pin}
 
     function verifyVoucher() {
 
-      let shopInput = document.getElementById("verifyShop").value;
-      let code = document.getElementById("verifyCode").value;
-      let pin = document.getElementById("verifyPin").value;
+      let shopInput = document.getElementById("verifyShop").value.trim();
+      let code = document.getElementById("verifyCode").value.trim();
+      let pin = document.getElementById("verifyPin").value.trim();
+
+      if (!shopInput || !code || !pin) {
+        document.getElementById("verifyOutput").innerHTML =
+          "<p style='color:red;font-weight:bold;'>❌ Enter Shop Code, Voucher Code and PIN</p>";
+        return;
+      }
 
       let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
 
-      let index = vouchers.findIndex(v => v.code === code && v.pin === pin);
+      let index = vouchers.findIndex(v =>
+        v.code === code &&
+        v.pin === pin &&
+        v.shop === shopInput
+      );
 
       if (index === -1) {
         document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:red;font-weight:bold;'>❌ Invalid Voucher</p>";
+          "<p style='color:red;font-weight:bold;'>❌ Invalid details or wrong shop</p>";
         return;
       }
 
       let voucher = vouchers[index];
 
-      if (voucher.shop !== shopInput) {
-        document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:red;font-weight:bold;'>❌ Wrong Shop</p>";
-        return;
-      }
-
       if (voucher.status === "USED") {
         document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:orange;font-weight:bold;'>⚠️ Already Used</p>";
+          "<p style='color:orange;font-weight:bold;'>⚠️ Voucher Already Used</p>";
         return;
       }
 
-      // ✅ Mark as used
       voucher.status = "USED";
       vouchers[index] = voucher;
       localStorage.setItem("vouchers", JSON.stringify(vouchers));
@@ -268,7 +299,7 @@ PIN: ${pin}
           <h3 style="color:#16a34a;">✅ APPROVED</h3>
           <p><b>Shop:</b> ${voucher.shop}</p>
           <p><b>Amount:</b> R${voucher.amount}</p>
-          <p style="color:#555;">Voucher now marked as USED</p>
+          <p style="color:#555;">Voucher marked as USED</p>
         </div>
       `;
     }
