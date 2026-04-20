@@ -118,9 +118,11 @@
 
 <body>
 
+  <!-- Background shapes -->
   <div class="bg-shape shape1"></div>
   <div class="bg-shape shape2"></div>
 
+  <!-- Header -->
   <div class="header">
     <div class="logo">💸 SENDA</div>
     <div class="tagline">Send help instantly</div>
@@ -148,10 +150,11 @@
     <div id="output"></div>
   </div>
 
-  <!-- SHOP VERIFY -->
+  <!-- SHOP VERIFICATION -->
   <div class="card">
     <h3>Shop Verification</h3>
 
+    <input id="verifyShop" placeholder="Enter Shop Code">
     <input id="verifyCode" placeholder="Enter Voucher Code">
     <input id="verifyPin" placeholder="Enter PIN">
 
@@ -221,30 +224,53 @@ PIN: ${pin}
 
     function verifyVoucher() {
 
+      let shopInput = document.getElementById("verifyShop").value;
       let code = document.getElementById("verifyCode").value;
       let pin = document.getElementById("verifyPin").value;
 
       let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
 
-      let found = vouchers.find(v => v.code === code && v.pin === pin);
+      let index = vouchers.findIndex(v => v.code === code && v.pin === pin);
 
-      if (!found) {
+      if (index === -1) {
         document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:red;'>❌ Invalid Voucher</p>";
+          "<p style='color:red;font-weight:bold;'>❌ Invalid Voucher</p>";
         return;
       }
 
-      if (found.status === "USED") {
+      let voucher = vouchers[index];
+
+      if (voucher.shop !== shopInput) {
         document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:orange;'>⚠️ Already Used</p>";
+          "<p style='color:red;font-weight:bold;'>❌ Wrong Shop</p>";
         return;
       }
 
-      found.status = "USED";
+      if (voucher.status === "USED") {
+        document.getElementById("verifyOutput").innerHTML =
+          "<p style='color:orange;font-weight:bold;'>⚠️ Already Used</p>";
+        return;
+      }
+
+      // ✅ Mark as used
+      voucher.status = "USED";
+      vouchers[index] = voucher;
       localStorage.setItem("vouchers", JSON.stringify(vouchers));
 
-      document.getElementById("verifyOutput").innerHTML =
-        `<p style='color:green;'>✅ Approved – Give R${found.amount}</p>`;
+      document.getElementById("verifyOutput").innerHTML = `
+        <div style="
+          background:#dcfce7;
+          padding:15px;
+          border-radius:10px;
+          margin-top:10px;
+          border:2px solid #22c55e;
+        ">
+          <h3 style="color:#16a34a;">✅ APPROVED</h3>
+          <p><b>Shop:</b> ${voucher.shop}</p>
+          <p><b>Amount:</b> R${voucher.amount}</p>
+          <p style="color:#555;">Voucher now marked as USED</p>
+        </div>
+      `;
     }
   </script>
 
