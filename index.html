@@ -6,71 +6,92 @@
 
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #e5e7eb; /* grey background */
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      background: linear-gradient(
+        180deg,
+        #dbeafe 0%,
+        #f0f9ff 50%,
+        #ffffff 100%
+      );
     }
 
-    /* MAIN WRAPPER (THIS IS THE FIX) */
-    .app {
-      max-width: 420px;
-      margin: 30px auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      overflow: hidden;
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.2;
+      z-index: 0;
     }
 
-    /* HEADER INSIDE BOX */
+    .shape1 {
+      width: 200px;
+      height: 200px;
+      background: #3B82F6;
+      top: -50px;
+      left: -50px;
+    }
+
+    .shape2 {
+      width: 250px;
+      height: 250px;
+      background: #22C55E;
+      bottom: -80px;
+      right: -80px;
+    }
+
     .header {
       background: #3B82F6;
       color: white;
-      text-align: center;
       padding: 20px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      position: relative;
+      z-index: 1;
     }
 
-    .header h2 {
-      margin: 0;
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
     }
 
-    .header p {
-      margin: 5px 0 0;
-      font-size: 13px;
+    .tagline {
+      font-size: 14px;
       opacity: 0.9;
     }
 
-    /* CONTENT AREA */
-    .content {
-      padding: 20px;
-    }
-
-    /* CARDS */
     .card {
-      margin-bottom: 20px;
-    }
-
-    h3 {
-      text-align: center;
-      margin-top: 0;
+      background: rgba(255,255,255,0.95);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 400px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(10px);
     }
 
     input, select {
-      width: 100%;
+      width: 90%;
       padding: 12px;
-      margin-top: 10px;
+      margin: 10px 0;
       border-radius: 8px;
       border: 1px solid #ddd;
+      font-size: 14px;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: none;
       background: #22C55E;
       color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      width: 95%;
       font-weight: bold;
+      font-size: 16px;
       cursor: pointer;
     }
 
@@ -78,186 +99,184 @@
       background: #16a34a;
     }
 
-    .terms {
-      font-size: 12px;
-      margin-top: 10px;
-      color: #444;
-    }
-
-    .terms ul {
-      padding-left: 18px;
-    }
-
-    .terms label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
     .voucher {
       background: #E0F2FE;
-      margin-top: 15px;
-      padding: 15px;
+      margin-top: 20px;
+      padding: 20px;
       border-radius: 12px;
       border: 2px dashed #3B82F6;
-      text-align: center;
     }
 
     .code {
       font-size: 22px;
       font-weight: bold;
       color: #EF4444;
+      letter-spacing: 2px;
     }
-
   </style>
 </head>
 
 <body>
 
-<div class="app">
+  <!-- Background -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
+  <!-- Header -->
   <div class="header">
-    <h2>💸 SENDA</h2>
-    <p>Send help instantly</p>
+    <div class="logo">💸 SENDA</div>
+    <div class="tagline">Send help instantly</div>
   </div>
 
-  <div class="content">
+  <!-- CREATE VOUCHER -->
+  <div class="card">
+    <h3>Create Voucher</h3>
 
-    <!-- CREATE -->
-    <div class="card">
-      <h3>Create Voucher</h3>
+    <input id="name" placeholder="Your Name">
+    <input id="phone" placeholder="Phone Number">
+    <input id="shop" placeholder="Enter Shop Code">
 
-      <input id="name" placeholder="Your Name">
-      <input id="phone" placeholder="Phone Number">
-      <input id="shop" placeholder="Enter Shop Code">
+    <select id="amount">
+      <option value="50">R50</option>
+      <option value="100">R100</option>
+      <option value="150">R150</option>
+      <option value="200">R200</option>
+    </select>
 
-      <select id="amount">
-        <option value="50">R50</option>
-        <option value="100">R100</option>
-        <option value="150">R150</option>
-        <option value="200">R200</option>
-      </select>
+    <input id="pin" placeholder="Create 4-digit PIN">
 
-      <input id="pin" placeholder="Create 4-digit PIN">
+    <button onclick="createVoucher()">Send Voucher</button>
 
-      <div class="terms">
-        <b>📜 Terms & Conditions</b>
-        <ul>
-          <li>Minimum 80% must be spent</li>
-          <li>Balance can be given as change</li>
-          <li>Valid only at selected shop</li>
-          <li>One-time use only</li>
-        </ul>
-
-        <label>
-          <input type="checkbox" id="agreeTerms">
-          I agree to Terms & Conditions
-        </label>
-      </div>
-
-      <button onclick="createVoucher()">Send Voucher</button>
-
-      <div id="output"></div>
-    </div>
-
-    <!-- VERIFY -->
-    <div class="card">
-      <h3>Shop Verification</h3>
-
-      <input id="verifyShop" placeholder="Shop Code">
-      <input id="verifyCode" placeholder="Voucher Code">
-      <input id="verifyPin" placeholder="PIN">
-
-      <button onclick="verifyVoucher()">Verify Voucher</button>
-
-      <div id="verifyOutput"></div>
-    </div>
-
+    <div id="output"></div>
   </div>
 
-</div>
+  <!-- SHOP VERIFICATION -->
+  <div class="card">
+    <h3>Shop Verification</h3>
 
-<script>
-function createVoucher() {
+    <input id="verifyShop" placeholder="Shop Code">
+    <input id="verifyCode" placeholder="Voucher Code">
+    <input id="verifyPin" placeholder="PIN">
 
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let shop = document.getElementById("shop").value;
-  let amount = document.getElementById("amount").value;
-  let pin = document.getElementById("pin").value;
-  let agreed = document.getElementById("agreeTerms").checked;
+    <button onclick="verifyVoucher()">Verify Voucher</button>
 
-  if (!name || !phone || !shop || !pin) {
-    alert("Fill all fields");
-    return;
-  }
+    <div id="verifyOutput"></div>
+  </div>
 
-  if (!agreed) {
-    alert("Agree to Terms");
-    return;
-  }
+  <script>
+    function createVoucher() {
 
-  let code = "SV" + Math.floor(100000 + Math.random() * 900000);
+      let name = document.getElementById("name").value;
+      let phone = document.getElementById("phone").value;
+      let shop = document.getElementById("shop").value;
+      let amount = document.getElementById("amount").value;
+      let pin = document.getElementById("pin").value;
 
-  let voucher = { code, pin, amount, shop, status: "ACTIVE" };
+      if (!name || !phone || !shop || !pin) {
+        alert("Please fill all fields");
+        return;
+      }
 
-  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
-  vouchers.push(voucher);
-  localStorage.setItem("vouchers", JSON.stringify(vouchers));
+      let code = "SV" + Math.floor(100000 + Math.random() * 900000);
 
-  let link = "https://wa.me/?text=" + encodeURIComponent(
-`SENDA VOUCHER
+      let voucher = {
+        code: code,
+        pin: pin,
+        amount: amount,
+        shop: shop,
+        status: "ACTIVE"
+      };
+
+      let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+      vouchers.push(voucher);
+      localStorage.setItem("vouchers", JSON.stringify(vouchers));
+
+      let message = `
+💸 SENDA VOUCHER
+
 Shop: ${shop}
 Amount: R${amount}
+
 Code: ${code}
-PIN: ${pin}`
-  );
+PIN: ${pin}
+`;
 
-  document.getElementById("output").innerHTML = `
-    <div class="voucher">
-      <p><b>${shop}</b></p>
-      <p>R${amount}</p>
-      <p class="code">${code}</p>
-      <p>PIN: ${pin}</p>
-      <a href="${link}" target="_blank">
-        <button style="background:#25D366;">Send via WhatsApp</button>
-      </a>
-    </div>
-  `;
-}
+      let whatsappLink = "https://wa.me/?text=" + encodeURIComponent(message);
 
-function verifyVoucher() {
+      let voucherHTML = `
+        <div class="voucher">
+          <h3>Voucher Ready ✅</h3>
+          <p><b>Shop:</b> ${shop}</p>
+          <p><b>Amount:</b> R${amount}</p>
+          <p class="code">${code}</p>
+          <p><b>PIN:</b> ${pin}</p>
 
-  let shop = document.getElementById("verifyShop").value.trim();
-  let code = document.getElementById("verifyCode").value.trim();
-  let pin = document.getElementById("verifyPin").value.trim();
+          <a href="${whatsappLink}" target="_blank">
+            <button style="margin-top:15px;background:#25D366;">
+              📲 Send via WhatsApp
+            </button>
+          </a>
+        </div>
+      `;
 
-  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+      document.getElementById("output").innerHTML = voucherHTML;
+    }
 
-  let index = vouchers.findIndex(v =>
-    v.code === code && v.pin === pin && v.shop === shop
-  );
+    function verifyVoucher() {
 
-  if (index === -1) {
-    document.getElementById("verifyOutput").innerHTML =
-      "<p style='color:red;'>Invalid voucher</p>";
-    return;
-  }
+      let shopInput = document.getElementById("verifyShop").value.trim();
+      let code = document.getElementById("verifyCode").value.trim();
+      let pin = document.getElementById("verifyPin").value.trim();
 
-  if (vouchers[index].status === "USED") {
-    document.getElementById("verifyOutput").innerHTML =
-      "<p style='color:orange;'>Already used</p>";
-    return;
-  }
+      if (!shopInput || !code || !pin) {
+        document.getElementById("verifyOutput").innerHTML =
+          "<p style='color:red;font-weight:bold;'>❌ Enter Shop Code, Voucher Code and PIN</p>";
+        return;
+      }
 
-  vouchers[index].status = "USED";
-  localStorage.setItem("vouchers", JSON.stringify(vouchers));
+      let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
 
-  document.getElementById("verifyOutput").innerHTML =
-    "<p style='color:green;'>✅ Approved</p>";
-}
-</script>
+      let index = vouchers.findIndex(v =>
+        v.code === code &&
+        v.pin === pin &&
+        v.shop === shopInput
+      );
+
+      if (index === -1) {
+        document.getElementById("verifyOutput").innerHTML =
+          "<p style='color:red;font-weight:bold;'>❌ Invalid details or wrong shop</p>";
+        return;
+      }
+
+      let voucher = vouchers[index];
+
+      if (voucher.status === "USED") {
+        document.getElementById("verifyOutput").innerHTML =
+          "<p style='color:orange;font-weight:bold;'>⚠️ Voucher Already Used</p>";
+        return;
+      }
+
+      // ✅ mark used
+      voucher.status = "USED";
+      vouchers[index] = voucher;
+      localStorage.setItem("vouchers", JSON.stringify(vouchers));
+
+      document.getElementById("verifyOutput").innerHTML = `
+        <div style="
+          background:#dcfce7;
+          padding:15px;
+          border-radius:10px;
+          margin-top:10px;
+          border:2px solid #22c55e;
+        ">
+          <h3 style="color:#16a34a;">✅ APPROVED</h3>
+          <p><b>Shop:</b> ${voucher.shop}</p>
+          <p><b>Amount:</b> R${voucher.amount}</p>
+          <p style="color:#555;">Voucher marked as USED</p>
+        </div>
+      `;
+    }
+  </script>
 
 </body>
 </html>
