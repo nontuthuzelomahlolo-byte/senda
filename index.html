@@ -6,18 +6,27 @@
 
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f4f6f9;
+      font-family: Arial, sans-serif;
+      background: #e5e7eb; /* grey background */
     }
 
-    /* HEADER */
+    /* MAIN WRAPPER (THIS IS THE FIX) */
+    .app {
+      max-width: 420px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    /* HEADER INSIDE BOX */
     .header {
       background: #3B82F6;
       color: white;
       text-align: center;
-      padding: 18px;
-      border-radius: 0 0 20px 20px;
+      padding: 20px;
     }
 
     .header h2 {
@@ -25,43 +34,34 @@
     }
 
     .header p {
-      margin: 4px 0 0;
+      margin: 5px 0 0;
       font-size: 13px;
       opacity: 0.9;
     }
 
-    /* MAIN CONTAINER */
-    .container {
-      max-width: 420px;
-      margin: auto;
+    /* CONTENT AREA */
+    .content {
       padding: 20px;
     }
 
     /* CARDS */
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      margin-top: 20px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
     }
 
     h3 {
-      margin-top: 0;
       text-align: center;
+      margin-top: 0;
     }
 
-    /* INPUTS */
     input, select {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
       border-radius: 8px;
       border: 1px solid #ddd;
-      font-size: 14px;
     }
 
-    /* BUTTON */
     button {
       width: 100%;
       padding: 14px;
@@ -72,23 +72,20 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      font-size: 15px;
     }
 
     button:hover {
       background: #16a34a;
     }
 
-    /* TERMS */
     .terms {
       font-size: 12px;
-      margin-top: 12px;
+      margin-top: 10px;
       color: #444;
     }
 
     .terms ul {
       padding-left: 18px;
-      margin: 8px 0;
     }
 
     .terms label {
@@ -98,11 +95,10 @@
       margin-top: 8px;
     }
 
-    /* VOUCHER DISPLAY */
     .voucher {
       background: #E0F2FE;
-      margin-top: 20px;
-      padding: 18px;
+      margin-top: 15px;
+      padding: 15px;
       border-radius: 12px;
       border: 2px dashed #3B82F6;
       text-align: center;
@@ -112,7 +108,6 @@
       font-size: 22px;
       font-weight: bold;
       color: #EF4444;
-      letter-spacing: 2px;
     }
 
   </style>
@@ -120,15 +115,16 @@
 
 <body>
 
-  <!-- HEADER -->
+<div class="app">
+
   <div class="header">
     <h2>💸 SENDA</h2>
     <p>Send help instantly</p>
   </div>
 
-  <div class="container">
+  <div class="content">
 
-    <!-- CREATE VOUCHER -->
+    <!-- CREATE -->
     <div class="card">
       <h3>Create Voucher</h3>
 
@@ -145,14 +141,13 @@
 
       <input id="pin" placeholder="Create 4-digit PIN">
 
-      <!-- TERMS -->
       <div class="terms">
         <b>📜 Terms & Conditions</b>
         <ul>
-          <li>Minimum 80% must be spent in-store</li>
-          <li>Remaining balance can be given as change</li>
+          <li>Minimum 80% must be spent</li>
+          <li>Balance can be given as change</li>
           <li>Valid only at selected shop</li>
-          <li>Voucher can only be used once</li>
+          <li>One-time use only</li>
         </ul>
 
         <label>
@@ -166,7 +161,7 @@
       <div id="output"></div>
     </div>
 
-    <!-- SHOP VERIFICATION -->
+    <!-- VERIFY -->
     <div class="card">
       <h3>Shop Verification</h3>
 
@@ -181,124 +176,88 @@
 
   </div>
 
-  <script>
-    function createVoucher() {
+</div>
 
-      let name = document.getElementById("name").value;
-      let phone = document.getElementById("phone").value;
-      let shop = document.getElementById("shop").value;
-      let amount = document.getElementById("amount").value;
-      let pin = document.getElementById("pin").value;
-      let agreed = document.getElementById("agreeTerms").checked;
+<script>
+function createVoucher() {
 
-      if (!name || !phone || !shop || !pin) {
-        alert("Please fill all fields");
-        return;
-      }
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let shop = document.getElementById("shop").value;
+  let amount = document.getElementById("amount").value;
+  let pin = document.getElementById("pin").value;
+  let agreed = document.getElementById("agreeTerms").checked;
 
-      if (!agreed) {
-        alert("You must agree to Terms & Conditions");
-        return;
-      }
+  if (!name || !phone || !shop || !pin) {
+    alert("Fill all fields");
+    return;
+  }
 
-      let code = "SV" + Math.floor(100000 + Math.random() * 900000);
+  if (!agreed) {
+    alert("Agree to Terms");
+    return;
+  }
 
-      let voucher = {
-        code: code,
-        pin: pin,
-        amount: amount,
-        shop: shop,
-        status: "ACTIVE"
-      };
+  let code = "SV" + Math.floor(100000 + Math.random() * 900000);
 
-      let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
-      vouchers.push(voucher);
-      localStorage.setItem("vouchers", JSON.stringify(vouchers));
+  let voucher = { code, pin, amount, shop, status: "ACTIVE" };
 
-      let message = `
-💸 SENDA VOUCHER
+  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+  vouchers.push(voucher);
+  localStorage.setItem("vouchers", JSON.stringify(vouchers));
 
+  let link = "https://wa.me/?text=" + encodeURIComponent(
+`SENDA VOUCHER
 Shop: ${shop}
 Amount: R${amount}
-
 Code: ${code}
-PIN: ${pin}
-`;
+PIN: ${pin}`
+  );
 
-      let whatsappLink = "https://wa.me/?text=" + encodeURIComponent(message);
+  document.getElementById("output").innerHTML = `
+    <div class="voucher">
+      <p><b>${shop}</b></p>
+      <p>R${amount}</p>
+      <p class="code">${code}</p>
+      <p>PIN: ${pin}</p>
+      <a href="${link}" target="_blank">
+        <button style="background:#25D366;">Send via WhatsApp</button>
+      </a>
+    </div>
+  `;
+}
 
-      document.getElementById("output").innerHTML = `
-        <div class="voucher">
-          <h3>Voucher Ready ✅</h3>
-          <p><b>Shop:</b> ${shop}</p>
-          <p><b>Amount:</b> R${amount}</p>
-          <p class="code">${code}</p>
-          <p><b>PIN:</b> ${pin}</p>
+function verifyVoucher() {
 
-          <a href="${whatsappLink}" target="_blank">
-            <button style="margin-top:10px;background:#25D366;">
-              📲 Send via WhatsApp
-            </button>
-          </a>
-        </div>
-      `;
-    }
+  let shop = document.getElementById("verifyShop").value.trim();
+  let code = document.getElementById("verifyCode").value.trim();
+  let pin = document.getElementById("verifyPin").value.trim();
 
-    function verifyVoucher() {
+  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
 
-      let shopInput = document.getElementById("verifyShop").value.trim();
-      let code = document.getElementById("verifyCode").value.trim();
-      let pin = document.getElementById("verifyPin").value.trim();
+  let index = vouchers.findIndex(v =>
+    v.code === code && v.pin === pin && v.shop === shop
+  );
 
-      if (!shopInput || !code || !pin) {
-        document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:red;font-weight:bold;'>❌ Enter Shop Code, Voucher Code and PIN</p>";
-        return;
-      }
+  if (index === -1) {
+    document.getElementById("verifyOutput").innerHTML =
+      "<p style='color:red;'>Invalid voucher</p>";
+    return;
+  }
 
-      let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+  if (vouchers[index].status === "USED") {
+    document.getElementById("verifyOutput").innerHTML =
+      "<p style='color:orange;'>Already used</p>";
+    return;
+  }
 
-      let index = vouchers.findIndex(v =>
-        v.code === code &&
-        v.pin === pin &&
-        v.shop === shopInput
-      );
+  vouchers[index].status = "USED";
+  localStorage.setItem("vouchers", JSON.stringify(vouchers));
 
-      if (index === -1) {
-        document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:red;font-weight:bold;'>❌ Invalid details or wrong shop</p>";
-        return;
-      }
-
-      let voucher = vouchers[index];
-
-      if (voucher.status === "USED") {
-        document.getElementById("verifyOutput").innerHTML =
-          "<p style='color:orange;font-weight:bold;'>⚠️ Voucher Already Used</p>";
-        return;
-      }
-
-      voucher.status = "USED";
-      vouchers[index] = voucher;
-      localStorage.setItem("vouchers", JSON.stringify(vouchers));
-
-      document.getElementById("verifyOutput").innerHTML = `
-        <div style="
-          background:#dcfce7;
-          padding:15px;
-          border-radius:10px;
-          margin-top:10px;
-          border:2px solid #22c55e;
-          text-align:center;
-        ">
-          <h3 style="color:#16a34a;">✅ APPROVED</h3>
-          <p><b>Shop:</b> ${voucher.shop}</p>
-          <p><b>Amount:</b> R${voucher.amount}</p>
-          <p>Voucher marked as USED</p>
-        </div>
-      `;
-    }
-  </script>
+  document.getElementById("verifyOutput").innerHTML =
+    "<p style='color:green;'>✅ Approved</p>";
+}
+</script>
 
 </body>
 </html>
