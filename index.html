@@ -1,146 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Senda Voucher</title>
+  <title>Senda Voucher System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary: #3B82F6;
+      --secondary: #22C55E;
+      --accent: #EF4444;
+      --bg: #f0f9ff;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       text-align: center;
-      background: linear-gradient(180deg,#dbeafe,#f0f9ff,#ffffff);
-      color: #333;
+      background: linear-gradient(180deg, #dbeafe, #f0f9ff, #ffffff);
+      color: #1e293b;
+      min-height: 100vh;
+      padding-bottom: 50px;
     }
 
+    /* HEADER & LOGO */
     .header {
-      background: #3B82F6;
+      background: var(--primary);
       color: white;
-      padding: 30px 20px;
-      border-bottom-left-radius: 30px;
-      border-bottom-right-radius: 30px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 40px 20px;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
 
-    .logo-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Placeholder for your actual logo image */
-    .logo-img {
-      width: 60px;
-      height: 60px;
+    .logo-box {
+      width: 70px;
+      height: 70px;
       background: white;
-      border-radius: 50%;
+      border-radius: 20px;
+      margin: 0 auto 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
-      margin-bottom: 5px;
+      font-size: 35px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     .logo-text {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: 1px;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 0;
     }
 
     .tagline {
       font-size: 14px;
       opacity: 0.9;
-      margin-top: 5px;
+      font-weight: 300;
     }
 
+    /* CARDS */
     .card {
       background: white;
       margin: 20px auto;
       padding: 25px;
-      border-radius: 20px;
-      max-width: 400px;
+      border-radius: 24px;
+      max-width: 420px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       text-align: left;
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
-    h3 { margin-top: 0; color: #1e40af; border-left: 4px solid #3B82F6; padding-left: 10px; }
+    h3 { 
+      margin-top: 0; 
+      color: #1e40af; 
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    label { font-size: 12px; font-weight: bold; color: #666; margin-left: 5px; }
+    label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-left: 2px;
+    }
 
     input, select {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0 18px 0;
-      border-radius: 10px;
+      padding: 14px;
+      margin: 6px 0 16px 0;
+      border-radius: 12px;
       border: 1px solid #e2e8f0;
       box-sizing: border-box;
       font-size: 16px;
+      outline: none;
+      transition: border 0.2s;
     }
 
+    input:focus { border-color: var(--primary); }
+
     button {
-      background: #22C55E;
+      background: var(--secondary);
       color: white;
       border: none;
-      padding: 15px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
       width: 100%;
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: all 0.2s;
     }
 
-    button:active { transform: scale(0.98); }
+    button:active { transform: scale(0.97); }
 
-    .voucher-display {
+    /* VOUCHER DISPLAY */
+    .voucher-box {
       background: #f8fafc;
       margin-top: 20px;
       padding: 20px;
-      border-radius: 15px;
-      border: 2px dashed #3B82F6;
+      border-radius: 18px;
+      border: 2px dashed var(--primary);
       text-align: center;
     }
 
-    .code-highlight {
-      font-size: 24px;
+    .voucher-code {
+      font-size: 26px;
       font-weight: 800;
-      color: #ef4444;
+      color: var(--accent);
       background: #fee2e2;
-      padding: 5px 15px;
-      border-radius: 8px;
+      padding: 8px 20px;
+      border-radius: 10px;
       display: inline-block;
       margin: 10px 0;
+      letter-spacing: 1px;
     }
 
-    .sms-notice {
-      font-size: 11px;
-      color: #64748b;
+    .status-msg {
+      padding: 12px;
+      border-radius: 12px;
       margin-top: 10px;
-      font-style: italic;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .history-list {
+      font-size: 13px;
+      padding-left: 20px;
+      color: #475569;
     }
   </style>
 </head>
-
 <body>
 
 <div class="header">
-  <div class="logo-container">
-    <div class="logo-img">💸</div>
-    <div class="logo-text">SENDA</div>
-  </div>
+  <div class="logo-box">💸</div>
+  <h1 class="logo-text">SENDA</h1>
   <div class="tagline">Send help instantly</div>
 </div>
 
 <div class="card">
   <h3>Create Voucher</h3>
   
-  <label>RECIPIENT CELL NUMBER</label>
+  <label>Recipient Cell Number</label>
   <input id="cell" type="tel" placeholder="e.g. 0812345678">
 
-  <label>SHOP CODE</label>
-  <input id="shop" placeholder="Enter Shop Name or ID">
+  <label>Shop Code / Name</label>
+  <input id="shop" placeholder="Where can they spend this?">
 
-  <label>AMOUNT</label>
+  <label>Voucher Amount</label>
   <select id="amount">
     <option value="50">R50</option>
     <option value="100">R100</option>
@@ -148,47 +178,59 @@
     <option value="200">R200</option>
   </select>
 
-  <label>SECRET 4-DIGIT PIN</label>
+  <label>Set 4-Digit PIN</label>
   <input id="pin" type="password" maxlength="4" placeholder="****">
 
-  <button onclick="createVoucher()">Send & Generate Voucher</button>
+  <button onclick="createVoucher()">Send Voucher</button>
   <div id="output"></div>
 </div>
 
 <div class="card">
   <h3>Shop Verification</h3>
   
-  <label>SHOP CODE</label>
+  <label>Your Shop Code</label>
   <input id="verifyShop" placeholder="Enter Shop Code">
   
-  <label>VOUCHER CODE</label>
+  <label>Customer Voucher Code</label>
   <input id="verifyCode" placeholder="SV-XXXXXX">
   
-  <label>CUSTOMER PIN</label>
-  <input id="verifyPin" type="password" placeholder="****">
+  <label>Customer PIN</label>
+  <input id="verifyPin" type="password" maxlength="4" placeholder="****">
   
-  <label>AMOUNT TO REDEEM</label>
-  <input id="spendAmount" type="number" placeholder="Enter amount spent">
+  <label>Amount Spent Today</label>
+  <input id="spendAmount" type="number" placeholder="0.00">
 
-  <button style="background: #3B82F6;" onclick="verifyVoucher()">Verify & Process</button>
+  <button style="background: var(--primary);" onclick="verifyVoucher()">Verify & Deduct</button>
   <div id="verifyOutput"></div>
 </div>
 
+<div class="card">
+  <h3>Check Balance</h3>
+  <label>Voucher Code</label>
+  <input id="checkCode" placeholder="SV-XXXXXX">
+  <label>PIN</label>
+  <input id="checkPin" type="password" placeholder="****">
+  <button style="background: #64748b;" onclick="checkVoucher()">View History</button>
+  <div id="checkOutput"></div>
+</div>
+
 <script>
-// Mock SMS Function
-function sendMockSMS(number, message) {
-  console.log(`To: ${number} | SMS Content: ${message}`);
-  // In a real app, you would fetch() a Twilio or BulkSMS endpoint here
+// --- CORE LOGIC ---
+
+// Simulated SMS function - In production, connect this to an API
+function sendSendaSMS(number, message) {
+  console.log(`%c SMS SENT TO ${number}: ${message}`, "background: #222; color: #bada55; padding: 5px;");
+  // alert("SMS Sent to " + number + "\n\n" + message); // Optional: uncomment to see alert
 }
 
 function createVoucher() {
   const cell = document.getElementById("cell").value;
-  const shop = document.getElementById("shop").value;
+  const shop = document.getElementById("shop").value.trim();
   const amount = document.getElementById("amount").value;
   const pin = document.getElementById("pin").value;
 
   if (!shop || !pin || !cell) {
-    alert("Please fill in all details including Cell Number");
+    alert("Please complete all fields.");
     return;
   }
 
@@ -196,30 +238,29 @@ function createVoucher() {
   
   const voucher = {
     code, pin, cell,
-    amount: parseInt(amount),
+    originalAmount: parseInt(amount),
     balance: parseInt(amount),
     shop: shop,
     status: "ACTIVE",
     history: []
   };
 
-  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+  let vouchers = JSON.parse(localStorage.getItem("senda_vouchers")) || [];
   vouchers.push(voucher);
-  localStorage.setItem("vouchers", JSON.stringify(vouchers));
+  localStorage.setItem("senda_vouchers", JSON.stringify(vouchers));
 
-  // Send "Initial" SMS Simulation
-  sendMockSMS(cell, `SENDA: You received a R${amount} voucher for ${shop}. Code: ${code}. Keep your PIN safe!`);
+  // Initial SMS
+  sendSendaSMS(cell, `SENDA: You have a new R${amount} voucher for ${shop}. Code: ${code}. PIN: ${pin}.`);
 
   const whatsappMsg = `💸 *SENDA VOUCHER*%0A%0AShop: ${shop}%0AAmount: R${amount}%0ACode: *${code}*%0APIN: ${pin}%0A%0A_Keep this code safe to redeem at the shop._`;
   const whatsappLink = "https://wa.me/" + cell + "?text=" + whatsappMsg;
 
   document.getElementById("output").innerHTML = `
-    <div class="voucher-display">
-      <p>Voucher Created for <b>${shop}</b></p>
-      <div class="code-highlight">${code}</div>
-      <p class="sms-notice">SMS Notification Sent to ${cell}</p>
+    <div class="voucher-box">
+      <p>Voucher Created!</p>
+      <div class="voucher-code">${code}</div>
       <a href="${whatsappLink}" target="_blank">
-        <button style="background:#25D366; margin-top:10px;">Send via WhatsApp</button>
+        <button style="background:#25D366; margin-top:10px;">Share to WhatsApp</button>
       </a>
     </div>
   `;
@@ -227,43 +268,90 @@ function createVoucher() {
 
 function verifyVoucher() {
   const shop = document.getElementById("verifyShop").value.trim();
-  const code = document.getElementById("verifyCode").value.trim();
+  const code = document.getElementById("verifyCode").value.trim().toUpperCase();
   const pin = document.getElementById("verifyPin").value.trim();
   const spend = parseInt(document.getElementById("spendAmount").value);
 
-  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+  if (!spend || spend <= 0) { alert("Enter a valid spend amount"); return; }
+
+  let vouchers = JSON.parse(localStorage.getItem("senda_vouchers")) || [];
   let index = vouchers.findIndex(v => v.code === code && v.pin === pin && v.shop === shop);
 
   if (index === -1) {
-    document.getElementById("verifyOutput").innerHTML = "<p style='color:red; font-weight:bold;'>❌ Access Denied: Invalid Shop, Code, or PIN</p>";
+    document.getElementById("verifyOutput").innerHTML = `<div class="status-msg" style="background:#fee2e2; color:#b91c1c;">❌ Invalid Credentials or Shop Code</div>`;
     return;
   }
 
   let v = vouchers[index];
 
-  if (spend > v.balance) {
-    document.getElementById("verifyOutput").innerHTML = `<p style='color:red;'>❌ Insufficient Funds. Balance: R${v.balance}</p>`;
+  if (v.status === "USED") {
+    document.getElementById("verifyOutput").innerHTML = `<div class="status-msg" style="background:#ffedd5; color:#9a3412;">⚠️ This voucher is already finished.</div>`;
     return;
   }
 
-  // Update Balance
+  if (spend > v.balance) {
+    document.getElementById("verifyOutput").innerHTML = `<div class="status-msg" style="background:#fee2e2; color:#b91c1c;">❌ Balance too low: R${v.balance}</div>`;
+    return;
+  }
+
+  // --- 80% RULE LOGIC ---
+  let totalSpentAfterThis = (v.originalAmount - v.balance) + spend;
+  let minSpendRequired = v.originalAmount * 0.8;
+  let potentialRemaining = v.balance - spend;
+
+  // If customer tries to empty the voucher but hasn't reached 80% total goods spend
+  if (potentialRemaining === 0 && totalSpentAfterThis < minSpendRequired) {
+    document.getElementById("verifyOutput").innerHTML = `
+      <div class="status-msg" style="background:#fee2e2; color:#b91c1c;">
+        ❌ 80% Rule: Customer must buy at least R${minSpendRequired} in total goods before clearing the voucher.
+      </div>`;
+    return;
+  }
+
+  // Success - Update Voucher
   v.balance -= spend;
-  v.history.push({ spent: spend, time: new Date().toLocaleString() });
+  v.history.push({ 
+    amount: spend, 
+    date: new Date().toLocaleString(),
+    remaining: v.balance 
+  });
 
   if (v.balance === 0) v.status = "USED";
 
   vouchers[index] = v;
-  localStorage.setItem("vouchers", JSON.stringify(vouchers));
+  localStorage.setItem("senda_vouchers", JSON.stringify(vouchers));
 
-  // SEND BALANCE SMS
-  const smsMessage = `SENDA: R${spend} spent at ${shop}. Your new voucher balance is R${v.balance}.`;
-  sendMockSMS(v.cell, smsMessage);
+  // SMS Balance Notification
+  sendSendaSMS(v.cell, `SENDA: R${spend} spent at ${shop}. Your new voucher balance is R${v.balance}.`);
 
   document.getElementById("verifyOutput").innerHTML = `
-    <div style="background:#dcfce7; padding:15px; border-radius:10px; margin-top:10px;">
-      <p style="color:#166534; font-weight:bold; margin:0;">✅ Approved</p>
-      <p style="margin:5px 0;">New Balance: <b>R${v.balance}</b></p>
-      <small>SMS Balance alert sent to customer.</small>
+    <div class="status-msg" style="background:#dcfce7; color:#166534;">
+      ✅ Approved! <br> Remaining Balance: <b>R${v.balance}</b>
+    </div>
+  `;
+}
+
+function checkVoucher() {
+  const code = document.getElementById("checkCode").value.trim().toUpperCase();
+  const pin = document.getElementById("checkPin").value.trim();
+
+  let vouchers = JSON.parse(localStorage.getItem("senda_vouchers")) || [];
+  let v = vouchers.find(v => v.code === code && v.pin === pin);
+
+  if (!v) {
+    document.getElementById("checkOutput").innerHTML = "<p style='color:red;'>Not found.</p>";
+    return;
+  }
+
+  let historyHTML = v.history.map(h => `<li>Spent R${h.amount} on ${h.date} (Left: R${h.remaining})</li>`).join("");
+
+  document.getElementById("checkOutput").innerHTML = `
+    <div class="voucher-box" style="text-align:left;">
+      <p><b>Balance: R${v.balance}</b></p>
+      <p><b>Status:</b> ${v.status}</p>
+      <hr>
+      <p><b>History:</b></p>
+      <ul class="history-list">${historyHTML || "No transactions yet."}</ul>
     </div>
   `;
 }
