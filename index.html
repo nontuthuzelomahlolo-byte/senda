@@ -6,85 +6,132 @@
 
   <style>
     body {
-      font-family: Arial;
-      background: #f0f9ff;
+      font-family: Arial, sans-serif;
+      margin: 0;
       text-align: center;
+      background: linear-gradient(180deg,#dbeafe,#f0f9ff,#ffffff);
+    }
+
+    .header {
+      background: #3B82F6;
+      color: white;
+      padding: 20px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .tagline {
+      font-size: 14px;
+      opacity: 0.9;
     }
 
     .card {
       background: white;
+      margin: 20px auto;
       padding: 20px;
-      margin: 30px auto;
-      border-radius: 15px;
+      border-radius: 16px;
       max-width: 400px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      text-align: left;
     }
 
     input, select {
-      width: 90%;
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
       margin: 10px 0;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
     }
 
     button {
-      background: #22c55e;
+      background: #22C55E;
       color: white;
-      padding: 12px;
       border: none;
+      padding: 14px;
       border-radius: 10px;
-      width: 95%;
+      width: 100%;
       font-weight: bold;
       cursor: pointer;
     }
 
     .voucher {
-      background: #e0f2fe;
-      padding: 15px;
-      border-radius: 10px;
+      background: #E0F2FE;
       margin-top: 15px;
-      border: 2px dashed #3b82f6;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px dashed #3B82F6;
+      text-align: center;
     }
 
     .code {
       font-size: 22px;
-      color: red;
       font-weight: bold;
+      color: #EF4444;
+    }
+
+    ul {
+      padding-left: 18px;
     }
   </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">💸 SENDA</div>
+  <div class="tagline">Send help instantly</div>
+</div>
+
+<!-- CREATE VOUCHER -->
 <div class="card">
-  <h2>Create Voucher</h2>
+  <h3>Create Voucher</h3>
 
   <input id="shop" placeholder="Shop Code">
-  
+
   <select id="amount">
     <option value="50">R50</option>
     <option value="100">R100</option>
     <option value="150">R150</option>
+    <option value="200">R200</option>
   </select>
 
-  <input id="pin" placeholder="4-digit PIN">
+  <input id="pin" placeholder="Create 4-digit PIN">
 
   <button onclick="createVoucher()">Send Voucher</button>
 
   <div id="output"></div>
 </div>
 
+<!-- SHOP VERIFY -->
 <div class="card">
-  <h2>Shop Verification</h2>
+  <h3>Shop Verification</h3>
 
+  <input id="verifyShop" placeholder="Shop Code">
   <input id="verifyCode" placeholder="Voucher Code">
   <input id="verifyPin" placeholder="PIN">
-  <input id="spend" placeholder="Amount to spend">
+  <input id="spendAmount" placeholder="Amount Spent">
 
-  <button onclick="verifyVoucher()">Verify</button>
+  <button onclick="verifyVoucher()">Verify Voucher</button>
 
   <div id="verifyOutput"></div>
+</div>
+
+<!-- CHECK BALANCE -->
+<div class="card">
+  <h3>Check Voucher</h3>
+
+  <input id="checkCode" placeholder="Voucher Code">
+  <input id="checkPin" placeholder="PIN">
+
+  <button onclick="checkVoucher()">Check Balance</button>
+
+  <div id="checkOutput"></div>
 </div>
 
 <script>
@@ -106,7 +153,7 @@ function createVoucher() {
     code: code,
     pin: pin,
     amount: parseInt(amount),
-    remaining: parseInt(amount),
+    balance: parseInt(amount),
     shop: shop,
     status: "ACTIVE",
     lastUsed: null,
@@ -118,13 +165,15 @@ function createVoucher() {
   localStorage.setItem("vouchers", JSON.stringify(vouchers));
 
   let message = `
-SENDA VOUCHER
+💸 SENDA VOUCHER
 
 Shop: ${shop}
 Amount: R${amount}
 
 Code: ${code}
 PIN: ${pin}
+
+⚠️ Do not share your PIN
 `;
 
   let whatsappLink = "https://wa.me/?text=" + encodeURIComponent(message);
@@ -145,14 +194,15 @@ PIN: ${pin}
 
 function verifyVoucher() {
 
+  let shop = document.getElementById("verifyShop").value.trim();
   let code = document.getElementById("verifyCode").value.trim();
   let pin = document.getElementById("verifyPin").value.trim();
-  let spend = parseInt(document.getElementById("spend").value);
+  let spend = parseInt(document.getElementById("spendAmount").value);
 
   let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
 
   let index = vouchers.findIndex(v =>
-    v.code === code && v.pin === pin
+    v.code === code && v.pin === pin && v.shop === shop
   );
 
   if (index === -1) {
@@ -169,42 +219,79 @@ function verifyVoucher() {
     return;
   }
 
-  if (v.remaining < spend) {
+  if (spend > v.balance) {
     document.getElementById("verifyOutput").innerHTML =
-      "<p style='color:red;'>❌ Not enough balance</p>";
+      "<p style='color:red;'>❌ Exceeds balance</p>";
     return;
   }
 
-  // update balance
-  v.remaining -= spend;
+  v.balance -= spend;
 
-  // update last used
+  let spentTotal = v.amount - v.balance;
+  let minSpend = v.amount * 0.8;
+
+  if (spentTotal < minSpend && v.balance === 0) {
+    v.balance += spend;
+    document.getElementById("verifyOutput").innerHTML =
+      "<p style='color:red;'>❌ Must reach 80% before finishing</p>";
+    return;
+  }
+
   v.lastUsed = new Date().toLocaleString();
 
-  // add history
   v.history.push({
     spent: spend,
-    remaining: v.remaining,
+    remaining: v.balance,
     time: v.lastUsed
   });
 
-  if (v.remaining === 0) {
+  if (v.balance === 0) {
     v.status = "USED";
   }
 
   vouchers[index] = v;
   localStorage.setItem("vouchers", JSON.stringify(vouchers));
 
+  document.getElementById("verifyOutput").innerHTML = `
+    <div style="background:#dcfce7;padding:10px;border-radius:10px;">
+      <p>✅ Approved</p>
+      <p><b>Remaining:</b> R${v.balance}</p>
+      <p><b>Last Used:</b> ${v.lastUsed}</p>
+    </div>
+  `;
+}
+
+function checkVoucher() {
+
+  let code = document.getElementById("checkCode").value.trim();
+  let pin = document.getElementById("checkPin").value.trim();
+
+  let vouchers = JSON.parse(localStorage.getItem("vouchers")) || [];
+
+  let v = vouchers.find(v =>
+    v.code === code && v.pin === pin
+  );
+
+  if (!v) {
+    document.getElementById("checkOutput").innerHTML =
+      "<p style='color:red;'>❌ Voucher not found</p>";
+    return;
+  }
+
   let historyHTML = v.history.map(h =>
     `<li>R${h.spent} | Left: R${h.remaining} | ${h.time}</li>`
   ).join("");
 
-  document.getElementById("verifyOutput").innerHTML = `
-    <div style="background:#dcfce7;padding:15px;border-radius:10px;">
-      <h3>✅ Approved</h3>
-      <p>Remaining: R${v.remaining}</p>
-      <p>Last Used: ${v.lastUsed}</p>
-      <ul style="text-align:left;">${historyHTML}</ul>
+  document.getElementById("checkOutput").innerHTML = `
+    <div class="voucher">
+      <h3>💸 SENDA VOUCHER</h3>
+      <p><b>Shop:</b> ${v.shop}</p>
+      <p><b>Remaining:</b> R${v.balance}</p>
+      <p><b>Status:</b> ${v.status}</p>
+      <p><b>Last Used:</b> ${v.lastUsed || "Not used yet"}</p>
+
+      <h4>History</h4>
+      <ul>${historyHTML}</ul>
     </div>
   `;
 }
