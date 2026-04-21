@@ -15,13 +15,17 @@
     h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
     label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
     input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; font-size: 16px; outline-color: var(--primary); }
+    
+    .tc-box { height: 100px; overflow-y: scroll; background: #f1f5f9; padding: 10px; font-size: 11px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 15px; color: #475569; }
+    .tc-agree { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; font-size: 12px; }
+    .tc-agree input { width: auto; margin-top: 3px; }
+
     button { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; font-size: 16px; margin-top: 20px; cursor: pointer; transition: 0.2s; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: var(--secondary); color: white; }
     .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
     .voucher-result { background: #eff6ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px; }
     .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 5px 0; }
-    .value-text { font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
     .data-pill { display: inline-block; padding: 5px 12px; background: #e2e8f0; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
   </style>
 </head>
@@ -40,37 +44,94 @@
   </div>
 </div>
 
-<div id="view-customer-reg" class="view"><div class="card"><h2>Customer Signup</h2><input id="reg-c-name" placeholder="Full Name"><input id="reg-c-email" placeholder="Email"><input id="reg-c-cell" placeholder="Cell"><input id="reg-c-pin" type="password" maxlength="4" placeholder="Login PIN"><button class="btn-primary" onclick="registerCustomer()">Create Account</button></div></div>
-<div id="view-customer-login" class="view"><div class="card"><h2>Customer Login</h2><input id="login-c-cell" placeholder="Cell"><input id="login-c-pin" type="password" placeholder="PIN"><button class="btn-primary" onclick="loginCustomer()">Login</button></div></div>
-<div id="view-shop-login" class="view"><div class="card"><h2>Shop Login</h2><input id="login-s-cell" placeholder="Cell"><input id="login-s-pass" type="password" placeholder="Password"><button class="btn-primary" onclick="loginShop()">Login</button></div></div>
+<div id="view-customer-reg" class="view">
+  <div class="card">
+    <h2>Customer Signup</h2>
+    <input id="reg-c-name" placeholder="Full Name">
+    <input id="reg-c-email" type="email" placeholder="Email Address">
+    <input id="reg-c-cell" type="tel" placeholder="Cell Number">
+    <input id="reg-c-pin" type="password" maxlength="4" placeholder="Create Account PIN">
+    
+    <div class="tc-box">
+      <b>Senda Terms & Conditions</b><br>
+      1. <b>80% Spend Rule:</b> At least 80% of the original voucher value must be spent on goods before change can be claimed.<br>
+      2. <b>Security:</b> Users are responsible for their unique Voucher Security PINs.<br>
+      3. <b>Expiry:</b> Vouchers expire after 3 years (CPA Compliance).<br>
+      4. <b>Privacy:</b> Data is processed under POPIA guidelines.
+    </div>
+    <div class="tc-agree">
+      <input type="checkbox" id="reg-c-check">
+      <span>I agree to the terms and the 80% rule.</span>
+    </div>
+    <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
+  </div>
+</div>
+
+<div id="view-customer-login" class="view">
+  <div class="card">
+    <h2>Customer Login</h2>
+    <input id="login-c-cell" placeholder="Cell Number">
+    <input id="login-c-pin" type="password" placeholder="PIN">
+    <button class="btn-primary" onclick="loginCustomer()">Login</button>
+    <p style="text-align:center; font-size:13px;">New? <span style="color:var(--primary); cursor:pointer;" onclick="showView('view-customer-reg')">Register</span></p>
+  </div>
+</div>
+
+<div id="view-shop-reg" class="view">
+  <div class="card">
+    <h2>Shop Registration</h2>
+    <input id="s-name" placeholder="Shop Name">
+    <input id="s-email" placeholder="Email">
+    <input id="s-cell" placeholder="Cell">
+    <input id="s-pass" type="password" placeholder="Password">
+    <div class="tc-box">
+      <b>Merchant Agreement</b><br>
+      1. Shops must enforce the 80% spend rule.<br>
+      2. Shops must verify the Voucher Security PIN for every sale.
+    </div>
+    <div class="tc-agree">
+      <input type="checkbox" id="s-check">
+      <span>I agree to the Merchant terms.</span>
+    </div>
+    <button class="btn-primary" onclick="registerShop()">Register Shop</button>
+  </div>
+</div>
+
+<div id="view-shop-login" class="view">
+  <div class="card">
+    <h2>Shop Login</h2>
+    <input id="login-s-cell" placeholder="Cell">
+    <input id="login-s-pass" type="password" placeholder="Password">
+    <button class="btn-primary" onclick="loginShop()">Login</button>
+    <p style="text-align:center; font-size:13px;"><span style="color:var(--primary); cursor:pointer;" onclick="showView('view-shop-reg')">Register your Shop</span></p>
+  </div>
+</div>
 
 <div id="view-customer-dash" class="view">
   <div class="card">
     <h2>Buy a Voucher</h2>
     <label>Recipient Cell</label><input id="buy-recipient" type="tel">
-    <label>Shop ID</label><input id="buy-shop-code">
+    <label>Shop ID</label><input id="buy-shop-code" placeholder="e.g. SHOP01">
     <label>Amount</label>
-    <select id="buy-amount">
-      <option value="50">R50</option><option value="100">R100</option><option value="200">R200</option>
-    </select>
-    <label>Set Voucher Security PIN</label>
+    <select id="buy-amount"><option value="50">R50</option><option value="100">R100</option><option value="200">R200</option></select>
+    <label>Set 4-Digit Voucher PIN</label>
     <input id="buy-voucher-pin" type="password" maxlength="4">
-    
     <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
-    <div id="buy-output"></div> <button class="btn-outline" onclick="logout()">Logout & Clear Data</button>
+    <div id="buy-output"></div>
+    <button class="btn-outline" onclick="logout()">Logout & Wipe Data</button>
   </div>
 </div>
 
 <div id="view-shop-dash" class="view">
   <div class="card">
     <h2 id="shop-title-display">Dashboard</h2>
-    <div class="voucher-result"><b id="shop-id-display"></b></div>
-    <label>Voucher Code</label><input id="v-code">
-    <label>Security PIN</label><input id="v-pin" type="password" maxlength="4">
-    <label>Spend Amount (R)</label><input id="v-spend" type="number">
-    <button class="btn-primary" onclick="processRedemption()">Verify & Pay</button>
+    <div id="shop-id-display" class="data-pill"></div>
+    <input id="v-code" placeholder="SV Voucher Code">
+    <input id="v-pin" type="password" maxlength="4" placeholder="Customer Voucher PIN">
+    <input id="v-spend" type="number" placeholder="Redeem Amount">
+    <button class="btn-primary" onclick="processRedemption()">Process Payment</button>
     <div id="v-output"></div>
-    <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout & Clear Data</button>
+    <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout & Wipe Data</button>
   </div>
 </div>
 
@@ -96,16 +157,39 @@
     document.getElementById(id).classList.add('active');
   };
 
-  // Logic for Registration and Login remains the same...
-  window.registerCustomer = async () => { /* ... same as before ... */ };
+  window.registerCustomer = async () => {
+    if(!document.getElementById('reg-c-check').checked) return alert("Accept T&Cs first");
+    const cell = document.getElementById('reg-c-cell').value;
+    await setDoc(doc(db, "customers", cell), { 
+      name: document.getElementById('reg-c-name').value,
+      email: document.getElementById('reg-c-email').value,
+      cell: cell, pin: document.getElementById('reg-c-pin').value
+    });
+    alert("Customer Registered!"); showView('view-customer-login');
+  };
+
   window.loginCustomer = async () => {
     const snap = await getDoc(doc(db, "customers", document.getElementById('login-c-cell').value));
     if (snap.exists() && snap.data().pin === document.getElementById('login-c-pin').value) {
       currentUser = snap.data();
       document.getElementById('user-display').innerText = "Hi, " + currentUser.name;
       showView('view-customer-dash');
-    } else alert("Invalid Login");
+    } else alert("Login failed");
   };
+
+  window.registerShop = async () => {
+    if(!document.getElementById('s-check').checked) return alert("Accept Merchant Terms first");
+    const shopsSnap = await getDocs(collection(db, "shops"));
+    const shopId = "SHOP" + (shopsSnap.size + 1).toString().padStart(2, '0');
+    await setDoc(doc(db, "shops", shopId), { 
+      name: document.getElementById('s-name').value,
+      cell: document.getElementById('s-cell').value,
+      pass: document.getElementById('s-pass').value,
+      code: shopId
+    });
+    alert("Shop Created! ID: " + shopId); showView('view-shop-login');
+  };
+
   window.loginShop = async () => {
     const snap = await getDocs(collection(db, "shops"));
     snap.forEach(d => { if(d.data().cell === document.getElementById('login-s-cell').value && d.data().pass === document.getElementById('login-s-pass').value) {
@@ -116,25 +200,15 @@
     }});
   };
 
-  // UPDATED: Buy Voucher now shows the Value
   window.buyVoucher = async () => {
     const vPin = document.getElementById('buy-voucher-pin').value;
     const code = "SV" + Math.floor(100000 + Math.random() * 900000);
     const amount = parseInt(document.getElementById('buy-amount').value);
-    
     await setDoc(doc(db, "vouchers", code), {
       code, pin: vPin, shop: document.getElementById('buy-shop-code').value.toUpperCase(),
       originalAmount: amount, balance: amount, recipient: document.getElementById('buy-recipient').value
     });
-
-    // Displaying the value clearly for the customer
-    document.getElementById('buy-output').innerHTML = `
-      <div class="voucher-result">
-        <div class="value-text">Value: R${amount}.00</div>
-        <p>VOUCHER CODE</p>
-        <div class="code-text">${code}</div>
-        <p>SECURITY PIN: <b>${vPin}</b></p>
-      </div>`;
+    document.getElementById('buy-output').innerHTML = `<div class="voucher-result"><b>Value: R${amount}</b><div class="code-text">${code}</div><p>SECURITY PIN: ${vPin}</p></div>`;
   };
 
   window.processRedemption = async () => {
@@ -142,29 +216,26 @@
     const pin = document.getElementById('v-pin').value;
     const spend = parseFloat(document.getElementById('v-spend').value);
     const snap = await getDoc(doc(db, "vouchers", code));
-    
     if (snap.exists() && snap.data().pin === pin && snap.data().shop === currentUser.code) {
       const v = snap.data();
+      // 80% Rule Logic
       if ((v.balance - spend) === 0 && (v.originalAmount - v.balance + spend) < (v.originalAmount * 0.8)) {
-        return alert(`80% RULE: Spend at least R${(v.originalAmount * 0.8).toFixed(2)} on goods first.`);
+        return alert(`80% RULE: You must spend at least R${(v.originalAmount * 0.8).toFixed(2)} on goods.`);
       }
       await updateDoc(doc(db, "vouchers", code), { balance: v.balance - spend });
-      document.getElementById('v-output').innerHTML = `
-        <div class="voucher-result">
-          <div class="data-pill">Original Value: R${v.originalAmount}</div><br>
-          ✅ Success! New Bal: R${(v.balance - spend).toFixed(2)}
-        </div>`;
-    } else alert("Verification failed");
+      document.getElementById('v-output').innerHTML = `<div class="voucher-result">✅ Payment OK! Bal: R${(v.balance - spend).toFixed(2)}</div>`;
+    } else alert("Invalid Code or PIN");
   };
 
   window.logout = () => {
     currentUser = null;
     document.getElementById('user-display').innerText = "";
-    document.querySelectorAll('input').forEach(input => input.value = "");
-    document.getElementById('buy-output').innerHTML = ""; // Wipes the voucher value and code
-    document.getElementById('v-output').innerHTML = ""; // Wipes shop results
+    document.querySelectorAll('input').forEach(i => i.value = "");
+    document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+    document.getElementById('buy-output').innerHTML = "";
+    document.getElementById('v-output').innerHTML = "";
     showView('view-landing');
-    alert("Session Wiped Successfully");
+    alert("Session Wiped & Logged Out");
   };
 </script>
 </body>
