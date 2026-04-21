@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Senda - Secure Voucher System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -9,42 +10,47 @@
       --secondary: #22C55E;
       --accent: #EF4444;
       --dark: #1e293b;
+      --light: #f8fafc;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      background: #f8fafc;
+      background: var(--light);
       color: var(--dark);
+      padding-bottom: 50px;
     }
 
+    /* HEADER */
     .nav {
       background: var(--primary);
       color: white;
-      padding: 15px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .logo { font-weight: 900; font-size: 20px; cursor: pointer; }
+    .logo { font-weight: 900; font-size: 22px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
+    /* VIEW MANAGEMENT - This hides and shows pages */
     .view { display: none; padding: 20px; max-width: 450px; margin: 0 auto; }
     .view.active { display: block; }
 
+    /* CARDS & UI */
     .card {
       background: white;
       padding: 25px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
 
-    h2 { margin-top: 0; color: var(--primary); font-size: 22px; }
-    h3 { font-size: 16px; margin-bottom: 10px; color: #475569; }
+    h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
+    h3 { font-size: 14px; margin: 15px 0 5px 0; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
     
-    label { font-size: 11px; font-weight: bold; color: #64748b; display: block; margin-top: 15px; text-transform: uppercase; }
+    label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
     
     input, select, textarea {
       width: 100%;
@@ -54,6 +60,7 @@
       border: 1px solid #e2e8f0;
       box-sizing: border-box;
       font-size: 16px;
+      outline-color: var(--primary);
     }
 
     button {
@@ -62,55 +69,69 @@
       border-radius: 12px;
       border: none;
       font-weight: bold;
+      font-size: 16px;
       margin-top: 20px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: var(--secondary); color: white; }
     .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
 
-    .switch-text { font-size: 13px; text-align: center; margin-top: 15px; color: #64748b; }
-    .switch-text span { color: var(--primary); cursor: pointer; font-weight: bold; }
+    button:active { transform: scale(0.96); }
 
+    .switch-text { font-size: 13px; text-align: center; margin-top: 20px; color: #64748b; }
+    .switch-text span { color: var(--primary); cursor: pointer; font-weight: bold; text-decoration: underline; }
+
+    /* RESULT STYLING */
     .voucher-result {
-      background: #f0f9ff;
+      background: #eff6ff;
       border: 2px dashed var(--primary);
-      padding: 15px;
+      padding: 20px;
       border-radius: 15px;
       text-align: center;
-      margin-top: 15px;
+      margin-top: 20px;
+    }
+
+    .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 10px 0; letter-spacing: 1px; }
+    
+    .shop-badge {
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
 <div class="nav">
-  <div class="logo" onclick="location.reload()">💸 SENDA</div>
-  <div id="user-display" style="font-size: 12px;"></div>
+  <div class="logo" onclick="location.reload()"><span>💸</span> SENDA</div>
+  <div id="user-display" style="font-size: 13px; font-weight: 500;"></div>
 </div>
 
 <div id="view-landing" class="view active">
   <div class="card" style="text-align:center;">
-    <h2>Welcome</h2>
-    <p>Please select your account type</p>
-    <button class="btn-primary" onclick="showView('view-customer-login')">Customer</button>
-    <button class="btn-outline" onclick="showView('view-shop-login')">Shop Owner</button>
+    <h2>Welcome to Senda</h2>
+    <p style="color:#64748b;">Please select your account type to continue</p>
+    <button class="btn-primary" onclick="showView('view-customer-login')">I am a Customer</button>
+    <button class="btn-outline" onclick="showView('view-shop-login')">I am a Shop Owner</button>
   </div>
 </div>
 
 <div id="view-customer-reg" class="view">
   <div class="card">
-    <h2>Customer Register</h2>
+    <h2>Customer Signup</h2>
     <label>Full Name</label>
-    <input id="reg-c-name" type="text">
+    <input id="reg-c-name" type="text" placeholder="John Doe">
     <label>Cell Number</label>
-    <input id="reg-c-cell" type="tel">
+    <input id="reg-c-cell" type="tel" placeholder="0123456789">
     <label>Create 4-Digit PIN</label>
-    <input id="reg-c-pin" type="password" maxlength="4">
+    <input id="reg-c-pin" type="password" maxlength="4" placeholder="****">
     <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
-    <p class="switch-text">Already have an account? <span onclick="showView('view-customer-login')">Login</span></p>
+    <p class="switch-text">Already have an account? <span onclick="showView('view-customer-login')">Login here</span></p>
   </div>
 </div>
 
@@ -122,33 +143,32 @@
     <label>4-Digit PIN</label>
     <input id="login-c-pin" type="password" maxlength="4">
     <button class="btn-primary" onclick="loginCustomer()">Login</button>
-    <p class="switch-text">New here? <span onclick="showView('view-customer-reg')">Register</span></p>
-    <button class="btn-outline" onclick="showView('view-landing')">Back</button>
+    <p class="switch-text">Don't have an account? <span onclick="showView('view-customer-reg')">Register</span></p>
+    <button class="btn-outline" onclick="showView('view-landing')">Go Back</button>
   </div>
 </div>
 
 <div id="view-shop-reg" class="view">
   <div class="card">
-    <h2>Shop Registration</h2>
+    <h2>Register Shop</h2>
     <label>Shop Name</label>
-    <input id="s-name" placeholder="e.g. Joe's Spaza">
+    <input id="s-name" placeholder="e.g. Sunny Spaza">
     <label>Owner Cell Number</label>
     <input id="s-cell" type="tel">
-    <label>Shop Address</label>
-    <textarea id="s-address" rows="2"></textarea>
+    <label>Physical Address</label>
+    <textarea id="s-address" rows="2" placeholder="Street, Area, City"></textarea>
     
-    <hr style="margin:20px 0; opacity: 0.1;">
     <h3>Banking Details</h3>
     <label>Bank Name</label>
     <input id="s-bank" placeholder="e.g. Capitec">
     <label>Account Number</label>
     <input id="s-acc" type="number">
     
-    <label>Create Password</label>
+    <label>Create Shop Password</label>
     <input id="s-pass" type="password">
     
-    <button class="btn-primary" onclick="registerShop()">Register Shop</button>
-    <p class="switch-text">Registered already? <span onclick="showView('view-shop-login')">Shop Login</span></p>
+    <button class="btn-primary" onclick="registerShop()">Register My Shop</button>
+    <p class="switch-text">Already registered? <span onclick="showView('view-shop-login')">Shop Login</span></p>
   </div>
 </div>
 
@@ -159,8 +179,9 @@
     <input id="login-s-cell" type="tel">
     <label>Password</label>
     <input id="login-s-pass" type="password">
-    <button class="btn-primary" onclick="loginShop()">Login</button>
-    <p class="switch-text">Not registered? <span onclick="showView('view-shop-reg')">Register Shop</span></p>
+    <button class="btn-primary" onclick="loginShop()">Login to Dashboard</button>
+    <p class="switch-text">Want to join Senda? <span onclick="showView('view-shop-reg')">Register Shop</span></p>
+    <button class="btn-outline" onclick="showView('view-landing')">Go Back</button>
   </div>
 </div>
 
@@ -171,17 +192,18 @@
     <label>Recipient Cell Number</label>
     <input id="buy-recipient" type="tel" placeholder="Who are you sending to?">
 
-    <label>Enter Shop Code</label>
-    <input id="buy-shop-code" type="text" placeholder="e.g. SHOP123">
+    <label>Enter Shop ID</label>
+    <input id="buy-shop-code" type="text" placeholder="e.g. SHOP01">
     
-    <label>Amount</label>
+    <label>Voucher Amount</label>
     <select id="buy-amount">
       <option value="50">R50</option>
       <option value="100">R100</option>
+      <option value="150">R150</option>
       <option value="200">R200</option>
     </select>
 
-    <button class="btn-secondary" onclick="buyVoucher()">Pay & Generate Voucher</button>
+    <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
     <div id="buy-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:20px;">Logout</button>
   </div>
@@ -190,58 +212,65 @@
 <div id="view-shop-dash" class="view">
   <div class="card">
     <h2 id="shop-title-display">Shop Dashboard</h2>
-    <div style="background:#f1f5f9; padding:15px; border-radius:12px; margin-bottom:20px;">
-      <p style="margin:0; font-size:12px;">Your Shop ID (Give this to customers):</p>
-      <b id="shop-id-display" style="font-size:20px; color:var(--primary);"></b>
+    <div class="shop-badge">
+      <p style="margin:0; font-size:12px; color:#64748b;">Your Unique Shop Code:</p>
+      <b id="shop-id-display" style="font-size:24px; color:var(--primary);"></b>
     </div>
 
-    <h3>Verify Voucher</h3>
+    <h3>Process Redemption</h3>
     <label>Voucher Code</label>
     <input id="v-code" placeholder="SV-XXXXXX">
     <label>Customer PIN</label>
     <input id="v-pin" type="password" maxlength="4">
-    <label>Amount Spent</label>
-    <input id="v-spend" type="number">
+    <label>Spend Amount (R)</label>
+    <input id="v-spend" type="number" placeholder="0.00">
     
-    <button class="btn-primary" onclick="processRedemption()">Verify & Deduct</button>
+    <button class="btn-primary" onclick="processRedemption()">Verify Payment</button>
     <div id="v-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout</button>
   </div>
 </div>
 
 <script>
+  // This variable keeps track of who is logged in
   let currentUser = null;
 
+  // --- VIEW NAVIGATION ---
   function showView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
+    window.scrollTo(0,0);
   }
 
   // --- CUSTOMER LOGIC ---
   function registerCustomer() {
-    const name = document.getElementById('reg-c-name').value;
-    const cell = document.getElementById('reg-c-cell').value;
-    const pin = document.getElementById('reg-c-pin').value;
+    const name = document.getElementById('reg-c-name').value.trim();
+    const cell = document.getElementById('reg-c-cell').value.trim();
+    const pin = document.getElementById('reg-c-pin').value.trim();
 
-    if(!name || cell.length < 10 || pin.length < 4) return alert("Fill all fields correctly");
+    if(!name || cell.length < 10 || pin.length < 4) {
+        alert("Please fill in all details (Cell must be 10 digits, PIN 4 digits)");
+        return;
+    }
 
     let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
-    if(customers.find(c => c.cell === cell)) return alert("Cell number already registered");
+    if(customers.find(c => c.cell === cell)) return alert("This cell number is already registered!");
 
     customers.push({ name, cell, pin });
     localStorage.setItem('senda_customers', JSON.stringify(customers));
-    alert("Registration successful! Please login.");
+    
+    alert("Success! Now you can login.");
     showView('view-customer-login');
   }
 
   function loginCustomer() {
-    const cell = document.getElementById('login-c-cell').value;
-    const pin = document.getElementById('login-c-pin').value;
+    const cell = document.getElementById('login-c-cell').value.trim();
+    const pin = document.getElementById('login-c-pin').value.trim();
 
     let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
     let user = customers.find(c => c.cell === cell && c.pin === pin);
 
-    if(!user) return alert("Invalid cell or PIN");
+    if(!user) return alert("Invalid Login. Please check your cell and PIN.");
 
     currentUser = { type: 'customer', ...user };
     document.getElementById('user-display').innerText = "Hi, " + user.name;
@@ -249,16 +278,17 @@
   }
 
   function buyVoucher() {
-    const recipient = document.getElementById('buy-recipient').value;
+    const recipient = document.getElementById('buy-recipient').value.trim();
     const shopCode = document.getElementById('buy-shop-code').value.toUpperCase().trim();
     const amount = parseInt(document.getElementById('buy-amount').value);
     
-    if(!recipient || !shopCode) return alert("Enter recipient and shop code");
+    if(!recipient || !shopCode) return alert("Please enter recipient number and shop ID");
 
     const code = "SV" + Math.floor(100000 + Math.random() * 900000);
+    
     const voucher = {
       code, 
-      pin: currentUser.pin,
+      pin: currentUser.pin, // Voucher uses the customer's account PIN
       shop: shopCode,
       originalAmount: amount,
       balance: amount,
@@ -272,42 +302,51 @@
 
     document.getElementById('buy-output').innerHTML = `
       <div class="voucher-result">
-        <p>Sent to: ${recipient}</p>
-        <p>Shop: ${shopCode}</p>
+        <p style="margin:0; font-size:12px;">VOUCHER CREATED</p>
         <div class="code-text">${code}</div>
-        <p style="font-size:11px;">SMS sent to recipient.</p>
+        <p>Valid at: <b>${shopCode}</b></p>
+        <p style="font-size:11px; color:#64748b;">A message was sent to ${recipient}</p>
       </div>
     `;
-    console.log(`SMS to ${recipient}: You received a R${amount} voucher for shop ${shopCode}. Code: ${code}`);
+    console.log(`[SMS SIMULATION] To ${recipient}: You got a R${amount} voucher for ${shopCode}. Code: ${code}`);
   }
 
   // --- SHOP LOGIC ---
   function registerShop() {
-    const name = document.getElementById('s-name').value;
-    const cell = document.getElementById('s-cell').value;
-    const pass = document.getElementById('s-pass').value;
+    const name = document.getElementById('s-name').value.trim();
+    const cell = document.getElementById('s-cell').value.trim();
+    const pass = document.getElementById('s-pass').value.trim();
 
-    if(!name || !cell || !pass) return alert("Fill all required fields");
+    if(!name || !cell || !pass) return alert("Please fill in the required fields");
 
     let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
-    const shopId = "SN" + Math.floor(100 + Math.random() * 899);
+    
+    // SEQUENTIAL ID GENERATION (SHOP01, SHOP02...)
+    let nextNum = shops.length + 1;
+    let shopId = "SHOP" + (nextNum < 10 ? "0" + nextNum : nextNum);
 
-    const newShop = { name, cell, pass, code: shopId, balance: 0 };
+    const newShop = { 
+        name, cell, pass, 
+        code: shopId, 
+        bank: document.getElementById('s-bank').value,
+        acc: document.getElementById('s-acc').value
+    };
+
     shops.push(newShop);
     localStorage.setItem('senda_shops', JSON.stringify(shops));
 
-    alert("Shop Registered! Your ID is: " + shopId);
+    alert("Registration Complete!\nYour Shop ID is: " + shopId);
     showView('view-shop-login');
   }
 
   function loginShop() {
-    const cell = document.getElementById('login-s-cell').value;
-    const pass = document.getElementById('login-s-pass').value;
+    const cell = document.getElementById('login-s-cell').value.trim();
+    const pass = document.getElementById('login-s-pass').value.trim();
 
     let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
     let shop = shops.find(s => s.cell === cell && s.pass === pass);
 
-    if(!shop) return alert("Invalid Shop credentials");
+    if(!shop) return alert("Shop not found. Check credentials.");
 
     currentUser = { type: 'shop', ...shop };
     document.getElementById('shop-title-display').innerText = shop.name;
@@ -317,29 +356,40 @@
 
   function processRedemption() {
     const code = document.getElementById('v-code').value.toUpperCase().trim();
-    const pin = document.getElementById('v-pin').value;
-    const spend = parseInt(document.getElementById('v-spend').value);
+    const pin = document.getElementById('v-pin').value.trim();
+    const spend = parseFloat(document.getElementById('v-spend').value);
+
+    if(!spend || spend <= 0) return alert("Enter a valid amount");
 
     let vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
+    // Only find voucher if it matches the code, pin, AND this specific shop's ID
     let vIdx = vouchers.findIndex(v => v.code === code && v.pin === pin && v.shop === currentUser.code);
 
-    if(vIdx === -1) return alert("Voucher not found for your shop or PIN is wrong");
+    if(vIdx === -1) return alert("Verification Failed: Invalid Code, PIN, or Voucher not for this shop.");
 
     let v = vouchers[vIdx];
-    if(spend > v.balance) return alert("Insufficient balance: R" + v.balance);
+    if(spend > v.balance) return alert("Insufficient balance! Customer only has R" + v.balance + " left.");
 
-    // 80% Rule
-    let totalSpent = (v.originalAmount - v.balance) + spend;
-    if((v.balance - spend) === 0 && totalSpent < (v.originalAmount * 0.8)) {
-      return alert("80% RULE: Customer must buy more items before clearing balance.");
+    // --- 80% RULE ---
+    let totalSpentSoFar = (v.originalAmount - v.balance) + spend;
+    let minGoodsSpend = v.originalAmount * 0.8;
+    
+    // If this purchase would finish the voucher, check if they spent 80% on goods
+    if((v.balance - spend) === 0 && totalSpentSoFar < minGoodsSpend) {
+        return alert("80% RULE: Customer must spend more on goods (at least R" + minGoodsSpend + " total) before voucher can be cleared.");
     }
 
+    // Success
     v.balance -= spend;
     vouchers[vIdx] = v;
     localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
 
-    document.getElementById('v-output').innerHTML = `<div style="color:green; font-weight:bold; margin-top:10px;">✅ Approved! Balance: R${v.balance}</div>`;
-    console.log(`SMS to ${v.recipient}: R${spend} spent. New Balance: R${v.balance}`);
+    document.getElementById('v-output').innerHTML = `
+        <div style="background:#dcfce7; color:#166534; padding:15px; border-radius:10px; margin-top:15px; font-weight:bold; text-align:center;">
+            ✅ Approved! <br> Remaining Balance: R${v.balance.toFixed(2)}
+        </div>
+    `;
+    console.log(`[SMS SIMULATION] To ${v.recipient}: Spent R${spend}. Balance is now R${v.balance}`);
   }
 
   function logout() {
