@@ -14,7 +14,7 @@
     .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-top: 20px; }
     h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
     label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
-    input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; font-size: 16px; outline-color: var(--primary); }
+    input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; font-size: 16px; outline-color: var(--primary); }
     button { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; font-size: 16px; margin-top: 20px; cursor: pointer; transition: 0.2s; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: var(--secondary); color: white; }
@@ -23,6 +23,7 @@
     .switch-text span { color: var(--primary); cursor: pointer; font-weight: bold; text-decoration: underline; }
     .voucher-result { background: #eff6ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px; }
     .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 10px 0; }
+    .data-pill { display: inline-block; padding: 5px 12px; background: #e2e8f0; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -46,53 +47,9 @@
     <label>Full Name</label><input id="reg-c-name">
     <label>Email Address</label><input id="reg-c-email" type="email">
     <label>Cell Number</label><input id="reg-c-cell" type="tel">
-    <label>4-Digit PIN</label><input id="reg-c-pin" type="password" maxlength="4">
+    <label>Account Login PIN</label><input id="reg-c-pin" type="password" maxlength="4">
     <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
     <p class="switch-text">Back to <span onclick="showView('view-customer-login')">Login</span></p>
-  </div>
-</div>
-
-<div id="view-customer-login" class="view">
-  <div class="card">
-    <h2>Customer Login</h2>
-    <label>Cell Number</label><input id="login-c-cell" type="tel">
-    <label>PIN</label><input id="login-c-pin" type="password">
-    <button class="btn-primary" onclick="loginCustomer()">Login</button>
-    <p class="switch-text">Forgot PIN? <span onclick="showView('view-forgot-password')">Reset</span></p>
-    <p class="switch-text">New here? <span onclick="showView('view-customer-reg')">Register</span></p>
-  </div>
-</div>
-
-<div id="view-shop-reg" class="view">
-  <div class="card">
-    <h2>Register Shop</h2>
-    <label>Shop Name</label><input id="s-name">
-    <label>Owner Email</label><input id="s-email" type="email">
-    <label>Owner Cell</label><input id="s-cell" type="tel">
-    <label>Password</label><input id="s-pass" type="password">
-    <button class="btn-primary" onclick="registerShop()">Register Shop</button>
-    <p class="switch-text">Back to <span onclick="showView('view-shop-login')">Login</span></p>
-  </div>
-</div>
-
-<div id="view-shop-login" class="view">
-  <div class="card">
-    <h2>Shop Login</h2>
-    <label>Cell Number</label><input id="login-s-cell" type="tel">
-    <label>Password</label><input id="login-s-pass" type="password">
-    <button class="btn-primary" onclick="loginShop()">Login</button>
-    <p class="switch-text">Forgot Password? <span onclick="showView('view-forgot-password')">Reset</span></p>
-    <p class="switch-text"><span onclick="showView('view-shop-reg')">Register Shop</span></p>
-  </div>
-</div>
-
-<div id="view-forgot-password" class="view">
-  <div class="card">
-    <h2>Reset Access</h2>
-    <p style="font-size: 13px; color: #64748b;">Enter your registered email to receive reset instructions.</p>
-    <label>Email Address</label><input id="reset-email" type="email">
-    <button class="btn-primary" onclick="resetPassword()">Send Reset Link</button>
-    <button class="btn-outline" onclick="showView('view-landing')">Cancel</button>
   </div>
 </div>
 
@@ -105,6 +62,9 @@
     <select id="buy-amount">
       <option value="50">R50</option><option value="100">R100</option><option value="200">R200</option>
     </select>
+    <label>Set Voucher Security PIN (4 Digits)</label>
+    <input id="buy-voucher-pin" type="password" maxlength="4" placeholder="Choose a PIN for this voucher">
+    
     <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
     <div id="buy-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:20px;">Logout</button>
@@ -115,14 +75,21 @@
   <div class="card">
     <h2 id="shop-title-display">Dashboard</h2>
     <div class="voucher-result"><b id="shop-id-display"></b></div>
-    <label>Voucher Code</label><input id="v-code">
-    <label>Customer PIN</label><input id="v-pin" type="password" maxlength="4">
-    <label>Spend Amount (R)</label><input id="v-spend" type="number">
-    <button class="btn-primary" onclick="processRedemption()">Verify Payment</button>
+    
+    <label>Voucher Code</label><input id="v-code" placeholder="SVXXXXXX">
+    <label>Voucher Security PIN</label><input id="v-pin" type="password" maxlength="4">
+    <label>Spend Amount (R)</label><input id="v-spend" type="number" placeholder="Enter amount to redeem">
+    
+    <button class="btn-primary" onclick="processRedemption()">Verify & Pay</button>
     <div id="v-output"></div>
+    
     <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout</button>
   </div>
 </div>
+
+<div id="view-customer-login" class="view"><div class="card"><h2>Customer Login</h2><label>Cell</label><input id="login-c-cell"><label>PIN</label><input id="login-c-pin" type="password"><button class="btn-primary" onclick="loginCustomer()">Login</button><p class="switch-text">New? <span onclick="showView('view-customer-reg')">Register</span></p></div></div>
+<div id="view-shop-reg" class="view"><div class="card"><h2>Register Shop</h2><label>Shop Name</label><input id="s-name"><label>Email</label><input id="s-email"><label>Cell</label><input id="s-cell"><label>Password</label><input id="s-pass" type="password"><button class="btn-primary" onclick="registerShop()">Register</button></div></div>
+<div id="view-shop-login" class="view"><div class="card"><h2>Shop Login</h2><label>Cell</label><input id="login-s-cell"><label>Password</label><input id="login-s-pass" type="password"><button class="btn-primary" onclick="loginShop()">Login</button></div></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -147,13 +114,14 @@
   };
 
   window.registerCustomer = async () => {
+    const cell = document.getElementById('reg-c-cell').value;
     const data = { 
       name: document.getElementById('reg-c-name').value,
       email: document.getElementById('reg-c-email').value,
-      cell: document.getElementById('reg-c-cell').value,
+      cell: cell,
       pin: document.getElementById('reg-c-pin').value
     };
-    await setDoc(doc(db, "customers", data.cell), data);
+    await setDoc(doc(db, "customers", cell), data);
     alert("Customer Registered!"); showView('view-customer-login');
   };
 
@@ -165,7 +133,7 @@
       currentUser = snap.data();
       document.getElementById('user-display').innerText = "Hi, " + currentUser.name;
       showView('view-customer-dash');
-    } else alert("Wrong details");
+    } else alert("Invalid Login");
   };
 
   window.registerShop = async () => {
@@ -194,20 +162,22 @@
     }});
   };
 
-  window.resetPassword = () => {
-    alert("A reset link has been sent to " + document.getElementById('reset-email').value);
-    showView('view-landing');
-  };
-
   window.buyVoucher = async () => {
+    const vPin = document.getElementById('buy-voucher-pin').value;
+    if(vPin.length < 4) return alert("Please set a 4-digit security PIN");
+    
     const code = "SV" + Math.floor(100000 + Math.random() * 900000);
     const amount = parseInt(document.getElementById('buy-amount').value);
     const voucher = {
-      code, pin: currentUser.pin, shop: document.getElementById('buy-shop-code').value.toUpperCase(),
-      originalAmount: amount, balance: amount, recipient: document.getElementById('buy-recipient').value
+      code, 
+      pin: vPin, 
+      shop: document.getElementById('buy-shop-code').value.toUpperCase(),
+      originalAmount: amount, 
+      balance: amount, 
+      recipient: document.getElementById('buy-recipient').value
     };
     await setDoc(doc(db, "vouchers", code), voucher);
-    document.getElementById('buy-output').innerHTML = `<div class="voucher-result"><p>CODE</p><div class="code-text">${code}</div><p>PIN: ${currentUser.pin}</p></div>`;
+    document.getElementById('buy-output').innerHTML = `<div class="voucher-result"><p>VOUCHER CREATED</p><div class="code-text">${code}</div><p>SECURITY PIN: ${vPin}</p></div>`;
   };
 
   window.processRedemption = async () => {
@@ -215,16 +185,28 @@
     const pin = document.getElementById('v-pin').value;
     const spend = parseFloat(document.getElementById('v-spend').value);
     const snap = await getDoc(doc(db, "vouchers", code));
+    
     if (snap.exists() && snap.data().pin === pin && snap.data().shop === currentUser.code) {
-      let v = snap.data();
-      let totalSpent = (v.originalAmount - v.balance) + spend;
-      if ((v.balance - spend) === 0 && totalSpent < (v.originalAmount * 0.8)) return alert("80% RULE: Spend more on goods!");
+      const v = snap.data();
+      const totalSpentSoFar = v.originalAmount - v.balance;
+      const totalSpentAfterThis = totalSpentSoFar + spend;
+      
+      // 80% Rule Check
+      if ((v.balance - spend) === 0 && totalSpentAfterThis < (v.originalAmount * 0.8)) {
+        return alert(`80% RULE: This voucher's original value was R${v.originalAmount}. You must spend at least R${(v.originalAmount * 0.8).toFixed(2)} on goods before claiming change.`);
+      }
+
       await updateDoc(doc(db, "vouchers", code), { balance: v.balance - spend });
-      document.getElementById('v-output').innerHTML = `<div class="voucher-result">✅ Approved! Bal: R${(v.balance - spend).toFixed(2)}</div>`;
-    } else alert("Invalid Code or PIN");
+      document.getElementById('v-output').innerHTML = `
+        <div class="voucher-result">
+          <div class="data-pill">Original Value: R${v.originalAmount}</div><br>
+          <span style="color:var(--secondary)">✅ SUCCESS</span><br>
+          <b>New Balance: R${(v.balance - spend).toFixed(2)}</b>
+        </div>`;
+    } else alert("Invalid Code, PIN, or Shop ID");
   };
 
-  window.logout = () => { currentUser = null; document.getElementById('user-display').innerText = ""; showView('view-landing'); };
+  window.logout = () => { currentUser = null; showView('view-landing'); };
 </script>
 </body>
 </html>
