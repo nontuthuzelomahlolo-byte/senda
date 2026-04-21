@@ -7,23 +7,24 @@
   <style>
     :root { --primary: #3B82F6; --secondary: #22C55E; --accent: #EF4444; --dark: #1e293b; --light: #f8fafc; }
     body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--light); color: var(--dark); padding-bottom: 50px; }
-    .nav { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .nav { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .logo { font-weight: 900; font-size: 22px; cursor: pointer; }
     .view { display: none; padding: 20px; max-width: 450px; margin: 0 auto; }
     .view.active { display: block; }
     .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-top: 20px; }
-    h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
+    h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; text-align: center; }
     label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
-    input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; font-size: 16px; }
-    button { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; font-size: 16px; margin-top: 20px; cursor: pointer; }
+    input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; font-size: 16px; outline-color: var(--primary); }
+    button { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; font-size: 16px; margin-top: 20px; cursor: pointer; transition: 0.2s; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: var(--secondary); color: white; }
     .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-    .tc-box { height: 100px; overflow-y: scroll; background: #f1f5f9; padding: 10px; font-size: 11px; margin-top: 15px; }
+    .tc-box { height: 100px; overflow-y: scroll; background: #f1f5f9; padding: 10px; font-size: 11px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 15px; color: #475569; }
+    .link-text { color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: underline; }
+    .calc-box { background: #fff7ed; border-left: 4px solid #f97316; padding: 12px; margin-top: 15px; font-size: 13px; border-radius: 4px; }
     .voucher-result { background: #eff6ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px; }
     .code-text { font-size: 28px; font-weight: 800; color: var(--accent); }
-    .calc-box { background: #fff7ed; border-left: 4px solid #f97316; padding: 10px; margin-top: 10px; font-size: 13px; }
-    .history-item { font-size: 12px; border-bottom: 1px solid #eee; padding: 8px 0; display: flex; justify-content: space-between; }
+    .history-item { font-size: 12px; border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; }
   </style>
 </head>
 <body>
@@ -41,33 +42,60 @@
   </div>
 </div>
 
+<div id="view-customer-login" class="view">
+  <div class="card">
+    <h2>Customer Login</h2>
+    <input id="login-c-cell" placeholder="Cell Number">
+    <input id="login-c-pin" type="password" placeholder="PIN">
+    <button class="btn-primary" onclick="loginCustomer()">Login</button>
+    <p style="text-align:center; font-size:13px; margin-top:15px;">
+      Forgot your PIN? <span class="link-text" onclick="forgotPin()">Recover via Email</span><br><br>
+      New here? <span class="link-text" onclick="showView('view-customer-reg')">Register Account</span>
+    </p>
+  </div>
+</div>
+
 <div id="view-customer-reg" class="view">
   <div class="card">
-    <h2>Customer Signup</h2>
+    <h2>Customer Registration</h2>
     <input id="reg-c-name" placeholder="Full Name">
-    <input id="reg-c-email" placeholder="Email Address">
-    <input id="reg-c-cell" placeholder="Cell Number">
-    <input id="reg-c-pin" type="password" maxlength="4" placeholder="Login PIN">
+    <input id="reg-c-email" type="email" placeholder="Email Address">
+    <input id="reg-c-cell" type="tel" placeholder="Cell Number">
+    <input id="reg-c-pin" type="password" maxlength="4" placeholder="Create 4-Digit PIN">
     <div class="tc-box">
-      <b>Senda Terms</b><br>
-      1. <b>80% Rule:</b> Enforced strictly for change.<br>
-      2. <b>Expiry:</b> Vouchers valid for 3 years from purchase.<br>
-      3. <b>Audit:</b> We track all redemptions for your protection.
+      <b>Senda Terms & Conditions</b><br>
+      1. <b>80% Rule:</b> Strictly enforced for all cash change requests.<br>
+      2. <b>Expiry:</b> Vouchers valid for 3 years (CPA compliance).<br>
+      3. <b>Audit:</b> All transactions are recorded for legal verification.
     </div>
-    <div style="font-size:12px; margin-top:10px;">
-      <input type="checkbox" id="reg-c-check"> I agree to T&Cs and Expiry Rules.
+    <div style="margin-top:10px; font-size:12px;">
+      <input type="checkbox" id="reg-c-check"> I agree to the terms and expiry rules.
     </div>
     <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
+    <p style="text-align:center;"><span class="link-text" onclick="showView('view-customer-login')">Back to Login</span></p>
   </div>
 </div>
 
 <div id="view-shop-login" class="view">
   <div class="card">
     <h2>Shop Login</h2>
-    <input id="login-s-cell" placeholder="Cell">
+    <input id="login-s-cell" placeholder="Cell Number">
     <input id="login-s-pass" type="password" placeholder="Password">
     <button class="btn-primary" onclick="loginShop()">Login</button>
-    <p style="text-align:center; font-size:13px;"><span style="color:var(--primary); cursor:pointer;" onclick="showView('view-shop-reg')">Register Shop</span></p>
+    <p style="text-align:center; font-size:13px; margin-top:15px;">
+      Want to partner? <span class="link-text" onclick="showView('view-shop-reg')">Register Shop</span>
+    </p>
+  </div>
+</div>
+
+<div id="view-shop-reg" class="view">
+  <div class="card">
+    <h2>Shop Registration</h2>
+    <input id="s-name" placeholder="Shop Name">
+    <input id="s-cell" placeholder="Contact Cell">
+    <input id="s-pass" type="password" placeholder="Set Password">
+    <button class="btn-primary" onclick="registerShop()">Register Shop</button>
+    <p style="text-align:center;"><span class="link-text" onclick="showView('view-shop-login')">Back to Login</span></p>
   </div>
 </div>
 
@@ -77,42 +105,33 @@
     <label>Shop ID</label><input id="buy-shop-code" placeholder="e.g. SHOP01">
     <label>Amount</label>
     <select id="buy-amount"><option value="50">R50</option><option value="100">R100</option><option value="200">R200</option></select>
-    <label>Set 4-Digit Voucher PIN</label>
-    <input id="buy-voucher-pin" type="password" maxlength="4">
+    <label>Set Voucher PIN</label><input id="buy-voucher-pin" type="password" maxlength="4">
     <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
     <div id="buy-output"></div>
-    <button class="btn-outline" onclick="logout()">Logout & Wipe</button>
+    <button class="btn-outline" onclick="logout()">Logout</button>
   </div>
 </div>
 
 <div id="view-shop-dash" class="view">
   <div class="card">
-    <h2 id="shop-title-display">Dashboard</h2>
-    <div id="shop-id-display" style="font-size:12px; color:gray;"></div>
-    
-    <label>Verify Voucher</label>
-    <input id="v-code" placeholder="SV Code" oninput="checkVoucher()">
+    <h2 id="shop-title-display">Shop Dashboard</h2>
+    <div id="shop-id-display" style="text-align:center; color:gray; font-size:12px;"></div>
+    <label>Redeem Voucher</label>
+    <input id="v-code" placeholder="SV Voucher Code" oninput="checkVoucher()">
     <div id="dynamic-calc" class="calc-box" style="display:none;"></div>
-    
-    <input id="v-pin" type="password" placeholder="Voucher PIN">
-    <input id="v-spend" type="number" placeholder="Amount to Spend">
+    <input id="v-pin" type="password" maxlength="4" placeholder="Voucher PIN">
+    <input id="v-spend" type="number" placeholder="Redeem Amount (R)">
     <button class="btn-primary" onclick="processRedemption()">Process Sale</button>
-    
     <div id="v-output"></div>
-    <div id="v-history" style="margin-top:20px;">
-      <h3>Recent History</h3>
-      <div id="history-list"></div>
-    </div>
-    <button class="btn-outline" onclick="logout()">Logout & Wipe</button>
+    <h3 style="margin-top:30px; font-size:16px;">Transaction Audit Log</h3>
+    <div id="history-list"></div>
+    <button class="btn-outline" onclick="logout()">Logout</button>
   </div>
 </div>
 
-<div id="view-customer-login" class="view"><div class="card"><h2>Customer Login</h2><input id="login-c-cell" placeholder="Cell"><input id="login-c-pin" type="password"><button class="btn-primary" onclick="loginCustomer()">Login</button></div></div>
-<div id="view-shop-reg" class="view"><div class="card"><h2>Shop Reg</h2><input id="s-name" placeholder="Shop Name"><input id="s-pass" type="password" placeholder="Pass"><button class="btn-primary" onclick="registerShop()">Register</button></div></div>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, addDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCRlgh-Xk1ifnFKfhLvpRNapHe9lda8aUE",
@@ -133,18 +152,43 @@
   };
 
   window.registerCustomer = async () => {
-    if(!document.getElementById('reg-c-check').checked) return alert("Accept T&Cs");
+    if(!document.getElementById('reg-c-check').checked) return alert("Accept T&Cs first");
     const cell = document.getElementById('reg-c-cell').value;
-    await setDoc(doc(db, "customers", cell), { name: document.getElementById('reg-c-name').value, cell: cell, pin: document.getElementById('reg-c-pin').value });
-    showView('view-customer-login');
+    const email = document.getElementById('reg-c-email').value;
+    await setDoc(doc(db, "customers", cell), { 
+      name: document.getElementById('reg-c-name').value, 
+      cell, email, pin: document.getElementById('reg-c-pin').value 
+    });
+    alert("Success! Please Login."); showView('view-customer-login');
+  };
+
+  window.forgotPin = async () => {
+    const cell = prompt("Enter your registered Cell Number:");
+    if(!cell) return;
+    const snap = await getDoc(doc(db, "customers", cell));
+    if(snap.exists()){
+      alert(`Recovery Instructions sent to: ${snap.data().email}\n(Note: In a live app, this triggers an automated Firebase Auth Email)`);
+    } else alert("Number not found.");
   };
 
   window.loginCustomer = async () => {
     const snap = await getDoc(doc(db, "customers", document.getElementById('login-c-cell').value));
     if (snap.exists() && snap.data().pin === document.getElementById('login-c-pin').value) {
       currentUser = snap.data();
+      document.getElementById('user-display').innerText = "Hi, " + currentUser.name;
       showView('view-customer-dash');
-    } else alert("Fail");
+    } else alert("Invalid PIN or Number");
+  };
+
+  window.registerShop = async () => {
+    const snap = await getDocs(collection(db, "shops"));
+    const shopId = "SHOP" + (snap.size + 1).toString().padStart(2, '0');
+    await setDoc(doc(db, "shops", shopId), { 
+      name: document.getElementById('s-name').value, 
+      cell: document.getElementById('s-cell').value, 
+      pass: document.getElementById('s-pass').value, code: shopId 
+    });
+    alert("Shop Registered! ID: " + shopId); showView('view-shop-login');
   };
 
   window.loginShop = async () => {
@@ -152,20 +196,21 @@
     snap.forEach(d => { if(d.data().cell === document.getElementById('login-s-cell').value && d.data().pass === document.getElementById('login-s-pass').value) {
       currentUser = d.data();
       document.getElementById('shop-title-display').innerText = currentUser.name;
-      document.getElementById('shop-id-display').innerText = "ID: " + currentUser.code;
+      document.getElementById('shop-id-display').innerText = "Voucher Merchant ID: " + currentUser.code;
       showView('view-shop-dash');
+      loadHistory();
     }});
   };
 
   window.buyVoucher = async () => {
     const code = "SV" + Math.floor(100000 + Math.random() * 900000);
     const amount = parseInt(document.getElementById('buy-amount').value);
-    const expiry = new Date();
-    expiry.setFullYear(expiry.getFullYear() + 3);
-
+    const expiry = new Date(); expiry.setFullYear(expiry.getFullYear() + 3);
+    
     await setDoc(doc(db, "vouchers", code), {
-      code, pin: document.getElementById('buy-voucher-pin').value, shop: document.getElementById('buy-shop-code').value.toUpperCase(),
-      originalAmount: amount, balance: amount, created: new Date().toLocaleDateString(), expiry: expiry.toLocaleDateString()
+      code, pin: document.getElementById('buy-voucher-pin').value, 
+      shop: document.getElementById('buy-shop-code').value.toUpperCase(),
+      originalAmount: amount, balance: amount, expiry: expiry.toLocaleDateString()
     });
     document.getElementById('buy-output').innerHTML = `<div class="voucher-result"><b>R${amount} Created</b><div class="code-text">${code}</div><p>Expires: ${expiry.toLocaleDateString()}</p></div>`;
   };
@@ -178,58 +223,34 @@
       const v = snap.data();
       const minGoods = v.originalAmount * 0.8;
       const spent = v.originalAmount - v.balance;
-      const remainingGoodsNeeded = Math.max(0, minGoods - spent);
-      
+      const needed = Math.max(0, minGoods - spent);
       document.getElementById('dynamic-calc').style.display = "block";
-      document.getElementById('dynamic-calc').innerHTML = `
-        <b>Audit Info:</b><br>
-        Original Value: R${v.originalAmount}<br>
-        80% Goods Goal: R${minGoods.toFixed(2)}<br>
-        <span style="color:red">Need to spend R${remainingGoodsNeeded.toFixed(2)} more for cash change.</span>
-      `;
+      document.getElementById('dynamic-calc').innerHTML = `<b>Rule Check:</b> Needs R${needed.toFixed(2)} more in goods for change.`;
     }
   };
 
   window.processRedemption = async () => {
     const code = document.getElementById('v-code').value.toUpperCase();
-    const pin = document.getElementById('v-pin').value;
     const spend = parseFloat(document.getElementById('v-spend').value);
     const snap = await getDoc(doc(db, "vouchers", code));
-    
-    if (snap.exists() && snap.data().pin === pin) {
+    if (snap.exists() && snap.data().pin === document.getElementById('v-pin').value) {
       const v = snap.data();
-      if ((v.balance - spend) === 0 && (v.originalAmount - v.balance + spend) < (v.originalAmount * 0.8)) {
-        return alert("80% Rule not met!");
-      }
-      
+      if ((v.balance - spend) === 0 && (v.originalAmount - v.balance + spend) < (v.originalAmount * 0.8)) return alert("80% Goods Rule Violation!");
       await updateDoc(doc(db, "vouchers", code), { balance: v.balance - spend });
-      
-      // Save Transaction to History
-      await addDoc(collection(db, "history"), {
-        code, amount: spend, shop: currentUser.name, date: new Date().toLocaleString()
-      });
-
-      document.getElementById('v-output').innerHTML = `✅ Paid! New Bal: R${(v.balance - spend).toFixed(2)}`;
+      await addDoc(collection(db, "history"), { shop: currentUser.name, amount: spend, date: new Date().toLocaleString() });
+      document.getElementById('v-output').innerHTML = `✅ Success! New Balance: R${(v.balance - spend).toFixed(2)}`;
       loadHistory();
     }
   };
 
   async function loadHistory() {
-    const hList = document.getElementById('history-list');
-    hList.innerHTML = "";
+    const hList = document.getElementById('history-list'); hList.innerHTML = "";
     const q = query(collection(db, "history"), where("shop", "==", currentUser.name));
     const snap = await getDocs(q);
-    snap.forEach(d => {
-      hList.innerHTML += `<div class="history-item"><span>${d.data().date}</span> <b>R${d.data().amount}</b></div>`;
-    });
+    snap.forEach(d => { hList.innerHTML += `<div class="history-item"><span>${d.data().date}</span> <b>-R${d.data().amount}</b></div>`; });
   }
 
-  window.logout = () => {
-    currentUser = null;
-    document.querySelectorAll('input').forEach(i => i.value = "");
-    document.getElementById('dynamic-calc').style.display = "none";
-    showView('view-landing');
-  };
+  window.logout = () => { location.reload(); };
 </script>
 </body>
 </html>
