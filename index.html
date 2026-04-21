@@ -2,128 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Senda - Send Help Instantly</title>
+  <title>Senda - Secure Voucher System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* 1. CSS - THE DESIGN BUCKET */
     :root {
-      --navy: #001F3F;   /* From your logo */
-      --lime: #8DC63F;   /* From your logo */
-      --sky: #4A90E2;    /* Accents */
-      --light-bg: #F0F4F8;
+      --primary: #3B82F6;
+      --secondary: #22C55E;
+      --accent: #EF4444;
+      --dark: #1e293b;
+      --light: #f8fafc;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: var(--light-bg);
       margin: 0;
-      color: var(--navy);
+      background: var(--light);
+      color: var(--dark);
       padding-bottom: 50px;
     }
 
-    /* Header styling matching your poster */
     .nav {
-      background-color: var(--navy);
+      background: var(--primary);
       color: white;
-      padding: 25px;
-      text-align: center;
-      border-bottom: 6px solid var(--lime);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .logo-text { font-weight: 900; font-size: 32px; letter-spacing: 2px; margin: 0; }
-    .tagline { font-size: 14px; color: var(--lime); font-weight: bold; margin-top: 5px; }
+    .logo { font-weight: 900; font-size: 22px; cursor: pointer; }
 
-    /* Modern Card Layout */
     .view { display: none; padding: 20px; max-width: 450px; margin: 0 auto; }
     .view.active { display: block; }
 
     .card {
       background: white;
-      padding: 30px;
-      border-radius: 30px;
-      box-shadow: 0 15px 35px rgba(0,31,63,0.1);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       margin-top: 20px;
-      border: 1px solid #E1E8EF;
     }
 
-    h2 { font-size: 24px; margin-bottom: 20px; text-align: center; color: var(--navy); }
+    h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
+    h3 { font-size: 14px; margin: 15px 0 5px 0; color: #64748b; text-transform: uppercase; }
     
     label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
     
     input, select, textarea {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       margin-top: 5px;
-      border-radius: 15px;
-      border: 2px solid #E1E8EF;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
       box-sizing: border-box;
       font-size: 16px;
-      outline-color: var(--lime);
     }
 
-    /* Pill-shaped buttons from your poster */
     button {
       width: 100%;
-      padding: 16px;
-      border-radius: 50px;
+      padding: 15px;
+      border-radius: 12px;
       border: none;
-      font-weight: 900;
+      font-weight: bold;
       font-size: 16px;
       margin-top: 20px;
       cursor: pointer;
-      transition: 0.3s;
-      text-transform: uppercase;
     }
 
-    .btn-primary { background: var(--lime); color: white; }
-    .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
-
-    button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(141, 198, 63, 0.4); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: var(--secondary); color: white; }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
 
     .switch-text { font-size: 13px; text-align: center; margin-top: 20px; color: #64748b; }
-    .switch-text span { color: var(--sky); cursor: pointer; font-weight: bold; text-decoration: underline; }
+    .switch-text span { color: var(--primary); cursor: pointer; font-weight: bold; text-decoration: underline; }
 
-    /* Voucher Display Area */
     .voucher-result {
-      background: #FFFCEB;
-      border: 3px dashed var(--lime);
+      background: #eff6ff;
+      border: 2px dashed var(--primary);
       padding: 20px;
-      border-radius: 25px;
+      border-radius: 15px;
       text-align: center;
       margin-top: 20px;
     }
 
-    .code-text { font-size: 36px; font-weight: 900; color: #E74C3C; margin: 10px 0; }
+    .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 10px 0; }
   </style>
 </head>
 <body>
 
 <div class="nav">
-  <h1 class="logo-text">SENDA</h1>
-  <div class="tagline">Send help. Instantly!</div>
+  <div class="logo" onclick="location.reload()">💸 SENDA</div>
+  <div id="user-display" style="font-size: 13px;"></div>
 </div>
 
 <div id="view-landing" class="view active">
   <div class="card" style="text-align:center;">
-    <h2>Welcome</h2>
-    <p>Select your account type to start</p>
-    <button class="btn-primary" onclick="showView('view-customer-login')">Customer</button>
-    <button class="btn-outline" onclick="showView('view-shop-login')">Shop Owner</button>
+    <h2>Welcome to Senda</h2>
+    <p>Please select your account type</p>
+    <button class="btn-primary" onclick="showView('view-customer-login')">Customer Login</button>
+    <button class="btn-outline" onclick="showView('view-shop-login')">Shop Owner Login</button>
   </div>
 </div>
 
 <div id="view-customer-reg" class="view">
   <div class="card">
-    <h2>Customer Signup</h2>
+    <h2>Customer Register</h2>
     <label>Full Name</label>
-    <input id="reg-c-name" type="text" placeholder="e.g. Kagiso">
+    <input id="reg-c-name" type="text">
     <label>Cell Number</label>
     <input id="reg-c-cell" type="tel">
     <label>Create 4-Digit PIN</label>
     <input id="reg-c-pin" type="password" maxlength="4">
     <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
-    <p class="switch-text">Have an account? <span onclick="showView('view-customer-login')">Login</span></p>
+    <p class="switch-text">Already have an account? <span onclick="showView('view-customer-login')">Login</span></p>
   </div>
 </div>
 
@@ -136,23 +128,24 @@
     <input id="login-c-pin" type="password" maxlength="4">
     <button class="btn-primary" onclick="loginCustomer()">Login</button>
     <p class="switch-text">New here? <span onclick="showView('view-customer-reg')">Register</span></p>
-    <button class="btn-outline" onclick="showView('view-landing')">Back</button>
   </div>
 </div>
 
 <div id="view-shop-reg" class="view">
   <div class="card">
-    <h2>Register Shop</h2>
+    <h2>Shop Registration</h2>
     <label>Shop Name</label>
     <input id="s-name" placeholder="Joe's Spaza">
-    <label>Cell Number</label>
+    <label>Owner Cell Number</label>
     <input id="s-cell" type="tel">
-    <label>Address</label>
+    <label>Shop Address</label>
     <textarea id="s-address" rows="2"></textarea>
-    <h3>Banking</h3>
-    <input id="s-bank" placeholder="Bank Name">
-    <input id="s-acc" type="number" placeholder="Account Number">
-    <label>Password</label>
+    <h3>Banking Details</h3>
+    <label>Bank Name</label>
+    <input id="s-bank" type="text">
+    <label>Account Number</label>
+    <input id="s-acc" type="number">
+    <label>Create Password</label>
     <input id="s-pass" type="password">
     <button class="btn-primary" onclick="registerShop()">Register Shop</button>
     <p class="switch-text">Registered? <span onclick="showView('view-shop-login')">Login</span></p>
@@ -167,7 +160,7 @@
     <label>Password</label>
     <input id="login-s-pass" type="password">
     <button class="btn-primary" onclick="loginShop()">Login</button>
-    <p class="switch-text">New Shop? <span onclick="showView('view-shop-reg')">Register</span></p>
+    <p class="switch-text">Not registered? <span onclick="showView('view-shop-reg')">Register</span></p>
   </div>
 </div>
 
@@ -176,15 +169,15 @@
     <h2>Buy Voucher</h2>
     <label>Recipient Cell</label>
     <input id="buy-recipient" type="tel">
-    <label>Shop ID</label>
-    <input id="buy-shop-code" type="text" placeholder="SHOP01">
+    <label>Enter Shop Code</label>
+    <input id="buy-shop-code" type="text" placeholder="e.g. SHOP01">
     <label>Amount</label>
     <select id="buy-amount">
       <option value="50">R50</option>
       <option value="100">R100</option>
       <option value="200">R200</option>
     </select>
-    <button class="btn-primary" onclick="buyVoucher()">Generate</button>
+    <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
     <div id="buy-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:20px;">Logout</button>
   </div>
@@ -193,111 +186,106 @@
 <div id="view-shop-dash" class="view">
   <div class="card">
     <h2 id="shop-title-display">Dashboard</h2>
-    <div style="background:#f1f5f9; padding:15px; border-radius:20px; text-align:center;">
-      <p style="margin:0; font-size:12px;">SHOP ID:</p>
-      <b id="shop-id-display" style="font-size:24px; color:var(--sky);"></b>
+    <div style="background:#f1f5f9; padding:15px; border-radius:12px; margin-bottom:15px;">
+      <p style="margin:0; font-size:12px;">YOUR SHOP ID:</p>
+      <b id="shop-id-display" style="font-size:20px; color:var(--primary);"></b>
     </div>
     <label>Voucher Code</label>
-    <input id="v-code" placeholder="SV-XXXXXX">
+    <input id="v-code">
     <label>Customer PIN</label>
     <input id="v-pin" type="password" maxlength="4">
-    <label>Redeem Amount</label>
+    <label>Amount Spent</label>
     <input id="v-spend" type="number">
-    <button class="btn-primary" onclick="processRedemption()">Verify Payment</button>
+    <button class="btn-primary" onclick="processRedemption()">Verify & Deduct</button>
     <div id="v-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout</button>
   </div>
 </div>
 
 <script>
-  /* 3. JAVASCRIPT - THE LOGIC BUCKET */
   let currentUser = null;
 
   function showView(viewId) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    var views = document.getElementsByClassName('view');
+    for (var i = 0; i < views.length; i++) {
+      views[i].classList.remove('active');
+    }
     document.getElementById(viewId).classList.add('active');
   }
 
   function registerCustomer() {
-    const name = document.getElementById('reg-c-name').value;
-    const cell = document.getElementById('reg-c-cell').value;
-    const pin = document.getElementById('reg-c-pin').value;
-    if(!name || cell.length < 10) return alert("Fill all details");
-    let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
-    customers.push({ name, cell, pin });
+    var name = document.getElementById('reg-c-name').value;
+    var cell = document.getElementById('reg-c-cell').value;
+    var pin = document.getElementById('reg-c-pin').value;
+    if(!name || cell.length < 10 || pin.length < 4) return alert("Error");
+    var customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
+    customers.push({ name: name, cell: cell, pin: pin });
     localStorage.setItem('senda_customers', JSON.stringify(customers));
     showView('view-customer-login');
   }
 
   function loginCustomer() {
-    const cell = document.getElementById('login-c-cell').value;
-    const pin = document.getElementById('login-c-pin').value;
-    let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
-    let user = customers.find(c => c.cell === cell && c.pin === pin);
-    if(!user) return alert("Wrong cell or PIN");
-    currentUser = { type: 'customer', ...user };
+    var cell = document.getElementById('login-c-cell').value;
+    var pin = document.getElementById('login-c-pin').value;
+    var customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
+    var user = customers.find(function(c) { return c.cell === cell && c.pin === pin; });
+    if(!user) return alert("Fail");
+    currentUser = { type: 'customer', name: user.name, cell: user.cell, pin: user.pin };
     showView('view-customer-dash');
   }
 
   function registerShop() {
-    const name = document.getElementById('s-name').value;
-    const cell = document.getElementById('s-cell').value;
-    const pass = document.getElementById('s-pass').value;
-    let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
-    
-    // SEQUENTIAL SHOP ID LOGIC
-    let nextNum = shops.length + 1;
-    let shopId = "SHOP" + (nextNum < 10 ? "0" + nextNum : nextNum);
-
-    shops.push({ name, cell, pass, code: shopId });
+    var name = document.getElementById('s-name').value;
+    var cell = document.getElementById('s-cell').value;
+    var pass = document.getElementById('s-pass').value;
+    var shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
+    var nextNum = shops.length + 1;
+    var shopId = "SHOP" + (nextNum < 10 ? "0" + nextNum : nextNum);
+    shops.push({ name: name, cell: cell, pass: pass, code: shopId });
     localStorage.setItem('senda_shops', JSON.stringify(shops));
-    alert("Registered! Your ID: " + shopId);
+    alert("ID: " + shopId);
     showView('view-shop-login');
   }
 
   function loginShop() {
-    const cell = document.getElementById('login-s-cell').value;
-    const pass = document.getElementById('login-s-pass').value;
-    let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
-    let shop = shops.find(s => s.cell === cell && s.pass === pass);
-    if(!shop) return alert("Invalid Shop Login");
-    currentUser = { type: 'shop', ...shop };
-    document.getElementById('shop-title-display').innerText = shop.name;
+    var cell = document.getElementById('login-s-cell').value;
+    var pass = document.getElementById('login-s-pass').value;
+    var shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
+    var shop = shops.find(function(s) { return s.cell === cell && s.pass === pass; });
+    if(!shop) return alert("Fail");
+    currentUser = { type: 'shop', name: shop.name, code: shop.code };
     document.getElementById('shop-id-display').innerText = shop.code;
+    document.getElementById('shop-title-display').innerText = shop.name;
     showView('view-shop-dash');
   }
 
   function buyVoucher() {
-    const shop = document.getElementById('buy-shop-code').value.toUpperCase();
-    const amount = parseInt(document.getElementById('buy-amount').value);
-    const code = "SV" + Math.floor(100000 + Math.random() * 900000);
-    const voucher = { code, pin: currentUser.pin, shop, originalAmount: amount, balance: amount, history: [] };
-    let vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
+    var shop = document.getElementById('buy-shop-code').value.toUpperCase();
+    var amount = parseInt(document.getElementById('buy-amount').value);
+    var code = "SV" + Math.floor(100000 + Math.random() * 900000);
+    var voucher = { code: code, pin: currentUser.pin, shop: shop, originalAmount: amount, balance: amount };
+    var vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
     vouchers.push(voucher);
     localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
-    document.getElementById('buy-output').innerHTML = `<div class="voucher-result"><p>CODE FOR ${shop}</p><div class="code-text">${code}</div></div>`;
+    document.getElementById('buy-output').innerHTML = '<div class="voucher-result"><div class="code-text">'+code+'</div></div>';
   }
 
   function processRedemption() {
-    const code = document.getElementById('v-code').value.toUpperCase();
-    const pin = document.getElementById('v-pin').value;
-    const spend = parseInt(document.getElementById('v-spend').value);
-    let vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
-    let vIdx = vouchers.findIndex(v => v.code === code && v.pin === pin && v.shop === currentUser.code);
-
-    if(vIdx === -1) return alert("Invalid Code, PIN, or Shop");
-    let v = vouchers[vIdx];
-    
-    // 80% Rule
-    let totalSpent = (v.originalAmount - v.balance) + spend;
+    var code = document.getElementById('v-code').value.toUpperCase();
+    var pin = document.getElementById('v-pin').value;
+    var spend = parseInt(document.getElementById('v-spend').value);
+    var vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
+    var vIdx = vouchers.findIndex(function(v) { return v.code === code && v.pin === pin && v.shop === currentUser.code; });
+    if(vIdx === -1) return alert("Fail");
+    var v = vouchers[vIdx];
+    var totalSpent = (v.originalAmount - v.balance) + spend;
     if((v.balance - spend) === 0 && totalSpent < (v.originalAmount * 0.8)) {
-      return alert("80% RULE: Customer must buy more goods first.");
+      return alert("80% Rule: Need more goods");
     }
-
     v.balance -= spend;
     vouchers[vIdx] = v;
     localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
-    document.getElementById('v-output').innerHTML = `<div style="color:green; font-weight:bold; text-align:center; margin-top:10px;">✅ Approved! Balance: R${v.balance}</div>`;
+    document.getElementById('v-output').innerHTML = "Done! Balance: " + v.balance;
   }
 
   function logout() { currentUser = null; showView('view-landing'); }
