@@ -21,6 +21,7 @@
       padding-bottom: 50px;
     }
 
+    /* HEADER */
     .nav {
       background: var(--primary);
       color: white;
@@ -31,11 +32,13 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .logo { font-weight: 900; font-size: 22px; cursor: pointer; }
+    .logo { font-weight: 900; font-size: 22px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
+    /* VIEW MANAGEMENT - This hides and shows pages */
     .view { display: none; padding: 20px; max-width: 450px; margin: 0 auto; }
     .view.active { display: block; }
 
+    /* CARDS & UI */
     .card {
       background: white;
       padding: 25px;
@@ -45,7 +48,7 @@
     }
 
     h2 { margin: 0 0 10px 0; color: var(--primary); font-size: 22px; }
-    h3 { font-size: 14px; margin: 15px 0 5px 0; color: #64748b; text-transform: uppercase; }
+    h3 { font-size: 14px; margin: 15px 0 5px 0; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
     
     label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-top: 15px; text-transform: uppercase; }
     
@@ -57,6 +60,7 @@
       border: 1px solid #e2e8f0;
       box-sizing: border-box;
       font-size: 16px;
+      outline-color: var(--primary);
     }
 
     button {
@@ -68,15 +72,19 @@
       font-size: 16px;
       margin-top: 20px;
       cursor: pointer;
+      transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: var(--secondary); color: white; }
     .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
 
+    button:active { transform: scale(0.96); }
+
     .switch-text { font-size: 13px; text-align: center; margin-top: 20px; color: #64748b; }
     .switch-text span { color: var(--primary); cursor: pointer; font-weight: bold; text-decoration: underline; }
 
+    /* RESULT STYLING */
     .voucher-result {
       background: #eff6ff;
       border: 2px dashed var(--primary);
@@ -86,36 +94,44 @@
       margin-top: 20px;
     }
 
-    .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 10px 0; }
+    .code-text { font-size: 28px; font-weight: 800; color: var(--accent); margin: 10px 0; letter-spacing: 1px; }
+    
+    .shop-badge {
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
 
 <div class="nav">
-  <div class="logo" onclick="location.reload()">💸 SENDA</div>
-  <div id="user-display" style="font-size: 13px;"></div>
+  <div class="logo" onclick="location.reload()"><span>💸</span> SENDA</div>
+  <div id="user-display" style="font-size: 13px; font-weight: 500;"></div>
 </div>
 
 <div id="view-landing" class="view active">
   <div class="card" style="text-align:center;">
     <h2>Welcome to Senda</h2>
-    <p>Please select your account type</p>
-    <button class="btn-primary" onclick="showView('view-customer-login')">Customer Login</button>
-    <button class="btn-outline" onclick="showView('view-shop-login')">Shop Owner Login</button>
+    <p style="color:#64748b;">Please select your account type to continue</p>
+    <button class="btn-primary" onclick="showView('view-customer-login')">I am a Customer</button>
+    <button class="btn-outline" onclick="showView('view-shop-login')">I am a Shop Owner</button>
   </div>
 </div>
 
 <div id="view-customer-reg" class="view">
   <div class="card">
-    <h2>Customer Register</h2>
+    <h2>Customer Signup</h2>
     <label>Full Name</label>
-    <input id="reg-c-name" type="text">
+    <input id="reg-c-name" type="text" placeholder="John Doe">
     <label>Cell Number</label>
-    <input id="reg-c-cell" type="tel">
+    <input id="reg-c-cell" type="tel" placeholder="0123456789">
     <label>Create 4-Digit PIN</label>
-    <input id="reg-c-pin" type="password" maxlength="4">
+    <input id="reg-c-pin" type="password" maxlength="4" placeholder="****">
     <button class="btn-primary" onclick="registerCustomer()">Create Account</button>
-    <p class="switch-text">Already have an account? <span onclick="showView('view-customer-login')">Login</span></p>
+    <p class="switch-text">Already have an account? <span onclick="showView('view-customer-login')">Login here</span></p>
   </div>
 </div>
 
@@ -127,28 +143,32 @@
     <label>4-Digit PIN</label>
     <input id="login-c-pin" type="password" maxlength="4">
     <button class="btn-primary" onclick="loginCustomer()">Login</button>
-    <p class="switch-text">New here? <span onclick="showView('view-customer-reg')">Register</span></p>
+    <p class="switch-text">Don't have an account? <span onclick="showView('view-customer-reg')">Register</span></p>
+    <button class="btn-outline" onclick="showView('view-landing')">Go Back</button>
   </div>
 </div>
 
 <div id="view-shop-reg" class="view">
   <div class="card">
-    <h2>Shop Registration</h2>
+    <h2>Register Shop</h2>
     <label>Shop Name</label>
-    <input id="s-name" placeholder="Joe's Spaza">
+    <input id="s-name" placeholder="e.g. Sunny Spaza">
     <label>Owner Cell Number</label>
     <input id="s-cell" type="tel">
-    <label>Shop Address</label>
-    <textarea id="s-address" rows="2"></textarea>
+    <label>Physical Address</label>
+    <textarea id="s-address" rows="2" placeholder="Street, Area, City"></textarea>
+    
     <h3>Banking Details</h3>
     <label>Bank Name</label>
-    <input id="s-bank" type="text">
+    <input id="s-bank" placeholder="e.g. Capitec">
     <label>Account Number</label>
     <input id="s-acc" type="number">
-    <label>Create Password</label>
+    
+    <label>Create Shop Password</label>
     <input id="s-pass" type="password">
-    <button class="btn-primary" onclick="registerShop()">Register Shop</button>
-    <p class="switch-text">Registered? <span onclick="showView('view-shop-login')">Login</span></p>
+    
+    <button class="btn-primary" onclick="registerShop()">Register My Shop</button>
+    <p class="switch-text">Already registered? <span onclick="showView('view-shop-login')">Shop Login</span></p>
   </div>
 </div>
 
@@ -159,24 +179,30 @@
     <input id="login-s-cell" type="tel">
     <label>Password</label>
     <input id="login-s-pass" type="password">
-    <button class="btn-primary" onclick="loginShop()">Login</button>
-    <p class="switch-text">Not registered? <span onclick="showView('view-shop-reg')">Register</span></p>
+    <button class="btn-primary" onclick="loginShop()">Login to Dashboard</button>
+    <p class="switch-text">Want to join Senda? <span onclick="showView('view-shop-reg')">Register Shop</span></p>
+    <button class="btn-outline" onclick="showView('view-landing')">Go Back</button>
   </div>
 </div>
 
 <div id="view-customer-dash" class="view">
   <div class="card">
-    <h2>Buy Voucher</h2>
-    <label>Recipient Cell</label>
-    <input id="buy-recipient" type="tel">
-    <label>Enter Shop Code</label>
+    <h2>Buy a Voucher</h2>
+    
+    <label>Recipient Cell Number</label>
+    <input id="buy-recipient" type="tel" placeholder="Who are you sending to?">
+
+    <label>Enter Shop ID</label>
     <input id="buy-shop-code" type="text" placeholder="e.g. SHOP01">
-    <label>Amount</label>
+    
+    <label>Voucher Amount</label>
     <select id="buy-amount">
       <option value="50">R50</option>
       <option value="100">R100</option>
+      <option value="150">R150</option>
       <option value="200">R200</option>
     </select>
+
     <button class="btn-secondary" onclick="buyVoucher()">Generate Voucher</button>
     <div id="buy-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:20px;">Logout</button>
@@ -185,110 +211,193 @@
 
 <div id="view-shop-dash" class="view">
   <div class="card">
-    <h2 id="shop-title-display">Dashboard</h2>
-    <div style="background:#f1f5f9; padding:15px; border-radius:12px; margin-bottom:15px;">
-      <p style="margin:0; font-size:12px;">YOUR SHOP ID:</p>
-      <b id="shop-id-display" style="font-size:20px; color:var(--primary);"></b>
+    <h2 id="shop-title-display">Shop Dashboard</h2>
+    <div class="shop-badge">
+      <p style="margin:0; font-size:12px; color:#64748b;">Your Unique Shop Code:</p>
+      <b id="shop-id-display" style="font-size:24px; color:var(--primary);"></b>
     </div>
+
+    <h3>Process Redemption</h3>
     <label>Voucher Code</label>
-    <input id="v-code">
+    <input id="v-code" placeholder="SV-XXXXXX">
     <label>Customer PIN</label>
     <input id="v-pin" type="password" maxlength="4">
-    <label>Amount Spent</label>
-    <input id="v-spend" type="number">
-    <button class="btn-primary" onclick="processRedemption()">Verify & Deduct</button>
+    <label>Spend Amount (R)</label>
+    <input id="v-spend" type="number" placeholder="0.00">
+    
+    <button class="btn-primary" onclick="processRedemption()">Verify Payment</button>
     <div id="v-output"></div>
     <button class="btn-outline" onclick="logout()" style="margin-top:40px;">Logout</button>
   </div>
 </div>
 
 <script>
+  // This variable keeps track of who is logged in
   let currentUser = null;
 
+  // --- VIEW NAVIGATION ---
   function showView(viewId) {
-    var views = document.getElementsByClassName('view');
-    for (var i = 0; i < views.length; i++) {
-      views[i].classList.remove('active');
-    }
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
+    window.scrollTo(0,0);
   }
 
+  // --- CUSTOMER LOGIC ---
   function registerCustomer() {
-    var name = document.getElementById('reg-c-name').value;
-    var cell = document.getElementById('reg-c-cell').value;
-    var pin = document.getElementById('reg-c-pin').value;
-    if(!name || cell.length < 10 || pin.length < 4) return alert("Error");
-    var customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
-    customers.push({ name: name, cell: cell, pin: pin });
+    const name = document.getElementById('reg-c-name').value.trim();
+    const cell = document.getElementById('reg-c-cell').value.trim();
+    const pin = document.getElementById('reg-c-pin').value.trim();
+
+    if(!name || cell.length < 10 || pin.length < 4) {
+        alert("Please fill in all details (Cell must be 10 digits, PIN 4 digits)");
+        return;
+    }
+
+    let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
+    if(customers.find(c => c.cell === cell)) return alert("This cell number is already registered!");
+
+    customers.push({ name, cell, pin });
     localStorage.setItem('senda_customers', JSON.stringify(customers));
+    
+    alert("Success! Now you can login.");
     showView('view-customer-login');
   }
 
   function loginCustomer() {
-    var cell = document.getElementById('login-c-cell').value;
-    var pin = document.getElementById('login-c-pin').value;
-    var customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
-    var user = customers.find(function(c) { return c.cell === cell && c.pin === pin; });
-    if(!user) return alert("Fail");
-    currentUser = { type: 'customer', name: user.name, cell: user.cell, pin: user.pin };
+    const cell = document.getElementById('login-c-cell').value.trim();
+    const pin = document.getElementById('login-c-pin').value.trim();
+
+    let customers = JSON.parse(localStorage.getItem('senda_customers')) || [];
+    let user = customers.find(c => c.cell === cell && c.pin === pin);
+
+    if(!user) return alert("Invalid Login. Please check your cell and PIN.");
+
+    currentUser = { type: 'customer', ...user };
+    document.getElementById('user-display').innerText = "Hi, " + user.name;
     showView('view-customer-dash');
   }
 
+  function buyVoucher() {
+    const recipient = document.getElementById('buy-recipient').value.trim();
+    const shopCode = document.getElementById('buy-shop-code').value.toUpperCase().trim();
+    const amount = parseInt(document.getElementById('buy-amount').value);
+    
+    if(!recipient || !shopCode) return alert("Please enter recipient number and shop ID");
+
+    const code = "SV" + Math.floor(100000 + Math.random() * 900000);
+    
+    const voucher = {
+      code, 
+      pin: currentUser.pin, // Voucher uses the customer's account PIN
+      shop: shopCode,
+      originalAmount: amount,
+      balance: amount,
+      recipient: recipient,
+      history: []
+    };
+
+    let vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
+    vouchers.push(voucher);
+    localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
+
+    document.getElementById('buy-output').innerHTML = `
+      <div class="voucher-result">
+        <p style="margin:0; font-size:12px;">VOUCHER CREATED</p>
+        <div class="code-text">${code}</div>
+        <p>Valid at: <b>${shopCode}</b></p>
+        <p style="font-size:11px; color:#64748b;">A message was sent to ${recipient}</p>
+      </div>
+    `;
+    console.log(`[SMS SIMULATION] To ${recipient}: You got a R${amount} voucher for ${shopCode}. Code: ${code}`);
+  }
+
+  // --- SHOP LOGIC ---
   function registerShop() {
-    var name = document.getElementById('s-name').value;
-    var cell = document.getElementById('s-cell').value;
-    var pass = document.getElementById('s-pass').value;
-    var shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
-    var nextNum = shops.length + 1;
-    var shopId = "SHOP" + (nextNum < 10 ? "0" + nextNum : nextNum);
-    shops.push({ name: name, cell: cell, pass: pass, code: shopId });
+    const name = document.getElementById('s-name').value.trim();
+    const cell = document.getElementById('s-cell').value.trim();
+    const pass = document.getElementById('s-pass').value.trim();
+
+    if(!name || !cell || !pass) return alert("Please fill in the required fields");
+
+    let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
+    
+    // SEQUENTIAL ID GENERATION (SHOP01, SHOP02...)
+    let nextNum = shops.length + 1;
+    let shopId = "SHOP" + (nextNum < 10 ? "0" + nextNum : nextNum);
+
+    const newShop = { 
+        name, cell, pass, 
+        code: shopId, 
+        bank: document.getElementById('s-bank').value,
+        acc: document.getElementById('s-acc').value
+    };
+
+    shops.push(newShop);
     localStorage.setItem('senda_shops', JSON.stringify(shops));
-    alert("ID: " + shopId);
+
+    alert("Registration Complete!\nYour Shop ID is: " + shopId);
     showView('view-shop-login');
   }
 
   function loginShop() {
-    var cell = document.getElementById('login-s-cell').value;
-    var pass = document.getElementById('login-s-pass').value;
-    var shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
-    var shop = shops.find(function(s) { return s.cell === cell && s.pass === pass; });
-    if(!shop) return alert("Fail");
-    currentUser = { type: 'shop', name: shop.name, code: shop.code };
-    document.getElementById('shop-id-display').innerText = shop.code;
+    const cell = document.getElementById('login-s-cell').value.trim();
+    const pass = document.getElementById('login-s-pass').value.trim();
+
+    let shops = JSON.parse(localStorage.getItem('senda_shops')) || [];
+    let shop = shops.find(s => s.cell === cell && s.pass === pass);
+
+    if(!shop) return alert("Shop not found. Check credentials.");
+
+    currentUser = { type: 'shop', ...shop };
     document.getElementById('shop-title-display').innerText = shop.name;
+    document.getElementById('shop-id-display').innerText = shop.code;
     showView('view-shop-dash');
   }
 
-  function buyVoucher() {
-    var shop = document.getElementById('buy-shop-code').value.toUpperCase();
-    var amount = parseInt(document.getElementById('buy-amount').value);
-    var code = "SV" + Math.floor(100000 + Math.random() * 900000);
-    var voucher = { code: code, pin: currentUser.pin, shop: shop, originalAmount: amount, balance: amount };
-    var vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
-    vouchers.push(voucher);
-    localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
-    document.getElementById('buy-output').innerHTML = '<div class="voucher-result"><div class="code-text">'+code+'</div></div>';
-  }
-
   function processRedemption() {
-    var code = document.getElementById('v-code').value.toUpperCase();
-    var pin = document.getElementById('v-pin').value;
-    var spend = parseInt(document.getElementById('v-spend').value);
-    var vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
-    var vIdx = vouchers.findIndex(function(v) { return v.code === code && v.pin === pin && v.shop === currentUser.code; });
-    if(vIdx === -1) return alert("Fail");
-    var v = vouchers[vIdx];
-    var totalSpent = (v.originalAmount - v.balance) + spend;
-    if((v.balance - spend) === 0 && totalSpent < (v.originalAmount * 0.8)) {
-      return alert("80% Rule: Need more goods");
+    const code = document.getElementById('v-code').value.toUpperCase().trim();
+    const pin = document.getElementById('v-pin').value.trim();
+    const spend = parseFloat(document.getElementById('v-spend').value);
+
+    if(!spend || spend <= 0) return alert("Enter a valid amount");
+
+    let vouchers = JSON.parse(localStorage.getItem('senda_vouchers')) || [];
+    // Only find voucher if it matches the code, pin, AND this specific shop's ID
+    let vIdx = vouchers.findIndex(v => v.code === code && v.pin === pin && v.shop === currentUser.code);
+
+    if(vIdx === -1) return alert("Verification Failed: Invalid Code, PIN, or Voucher not for this shop.");
+
+    let v = vouchers[vIdx];
+    if(spend > v.balance) return alert("Insufficient balance! Customer only has R" + v.balance + " left.");
+
+    // --- 80% RULE ---
+    let totalSpentSoFar = (v.originalAmount - v.balance) + spend;
+    let minGoodsSpend = v.originalAmount * 0.8;
+    
+    // If this purchase would finish the voucher, check if they spent 80% on goods
+    if((v.balance - spend) === 0 && totalSpentSoFar < minGoodsSpend) {
+        return alert("80% RULE: Customer must spend more on goods (at least R" + minGoodsSpend + " total) before voucher can be cleared.");
     }
+
+    // Success
     v.balance -= spend;
     vouchers[vIdx] = v;
     localStorage.setItem('senda_vouchers', JSON.stringify(vouchers));
-    document.getElementById('v-output').innerHTML = "Done! Balance: " + v.balance;
+
+    document.getElementById('v-output').innerHTML = `
+        <div style="background:#dcfce7; color:#166534; padding:15px; border-radius:10px; margin-top:15px; font-weight:bold; text-align:center;">
+            ✅ Approved! <br> Remaining Balance: R${v.balance.toFixed(2)}
+        </div>
+    `;
+    console.log(`[SMS SIMULATION] To ${v.recipient}: Spent R${spend}. Balance is now R${v.balance}`);
   }
 
-  function logout() { currentUser = null; showView('view-landing'); }
+  function logout() {
+    currentUser = null;
+    document.getElementById('user-display').innerText = "";
+    showView('view-landing');
+  }
 </script>
+
 </body>
 </html>
